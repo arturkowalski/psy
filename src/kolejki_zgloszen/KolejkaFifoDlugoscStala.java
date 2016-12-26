@@ -77,7 +77,7 @@ public final class KolejkaFifoDlugoscStala implements KolejkaZgloszen {
 		return z;
 	}
 	
-	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (iu == iw) {
 			throw new KolejkaPustaWyj();
 		}

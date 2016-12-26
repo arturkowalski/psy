@@ -5,28 +5,20 @@ import java.io.IOException;
 
 public class Test {
 	public static void main(String[] args) {
-		KolejkaFifoDlugoscStala kolejka = new KolejkaFifoDlugoscStala(10);
+		KolejkaPriorytetowaDlugoscZmienna kolejka = new KolejkaPriorytetowaDlugoscZmienna(10);
 		Numery postep = new Numery(1, 1);
 		Random priorytety = new Random();
 		
 		int i = 1;
 		char z = ' ';
 		
-		for ( ; i <= 10; ++i) {
+		for ( ; i <= 30; ++i) {
 			try {
 				kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
 			}
 			catch (KolejkaPelnaWyj wyj) {
 				System.out.println(wyj.toString());
 			}
-		}
-		
-		try {
-			kolejka.usun();
-			kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
-		}
-		catch (final KolejkaPustaWyj | KolejkaPelnaWyj wyj) {
-			System.out.println(wyj.toString());
 		}
 		
 		for (i = kolejka.stan(); i > 0; --i) {

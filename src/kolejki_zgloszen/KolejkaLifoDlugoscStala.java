@@ -63,7 +63,7 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 		return z;
 	}
 	
-	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}

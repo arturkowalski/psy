@@ -69,7 +69,6 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		// if (stan == dlugosc && iu == 0) {
 		if (kolejkaPelna()) {
 			zmienDlugosc(bufor.length << 1);
 		}
@@ -104,7 +103,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 		return z;
 	}
 	
-	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
@@ -113,7 +112,6 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 	}
 	
 	public boolean kolejkaPusta() {
-		// return iu == iw;
 		return stan == 0;
 	}
 	
