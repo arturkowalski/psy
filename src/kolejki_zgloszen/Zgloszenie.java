@@ -33,7 +33,7 @@ public final class Zgloszenie {
 	}
 	
 	public String toString() {
-		return "Zgloszenie numer " + numer + ": czas nadejscia rowny " + czasNadejscia +
-			", priorytet - " + priorytet;
+		return "Zgloszenie numer " + numer + " (czas nadejscia rowny " + czasNadejscia +
+			", priorytet - " + priorytet + ")";
 	}
 }

@@ -55,7 +55,7 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length);
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
 		}
 		
 		bufor[++stan] = zgloszenie;
@@ -92,7 +92,7 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 	}
 	
 	public boolean kolejkaPelna() {
-		return stan == bufor.length;
+		return stan == bufor.length - 1;
 	}
 	
 	public int stan() {

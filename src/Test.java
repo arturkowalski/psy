@@ -5,29 +5,19 @@ import java.io.IOException;
 
 public class Test {
 	public static void main(String[] args) {
-		KolejkaPriorytetowaDlugoscZmienna kolejka = new KolejkaPriorytetowaDlugoscZmienna(10);
+		KolejkaPriorytetowaDlugoscStala kolejka = new KolejkaPriorytetowaDlugoscStala(10);
 		Numery postep = new Numery(1, 1);
 		Random priorytety = new Random();
 		
 		int i = 1;
 		char z = ' ';
 		
-		for ( ; i <= 30; ++i) {
-			try {
-				kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
-			}
-			catch (KolejkaPelnaWyj wyj) {
-				System.out.println(wyj.toString());
-			}
+		for ( ; i <= 13; ++i) {
+			kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
 		}
 		
 		for (i = kolejka.stan(); i > 0; --i) {
-			try {
-				System.out.println(kolejka.usun().toString());
-			}
-			catch (KolejkaPustaWyj wyj) {
-				System.out.println(wyj.toString());
-			}
+			System.out.println(kolejka.usun().toString());
 		}
 		
 		System.out.println("\nAby przerwac prace programu, wcisnij q");

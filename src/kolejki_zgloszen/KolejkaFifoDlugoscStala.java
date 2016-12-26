@@ -47,7 +47,7 @@ public final class KolejkaFifoDlugoscStala implements KolejkaZgloszen {
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length);
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
 		}
 		
 		bufor[iw++] = zgloszenie;
