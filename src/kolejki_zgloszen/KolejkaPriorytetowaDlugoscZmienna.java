@@ -69,6 +69,10 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		stan = 0;
 	}
 	
+	public KolejkaPriorytetowaDlugoscZmienna() {
+		this(30);
+	}
+	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
 			zmienDlugosc(bufor.length << 1);

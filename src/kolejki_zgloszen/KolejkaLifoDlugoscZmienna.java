@@ -31,6 +31,10 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaZgloszen {
 		w = 0;
 	}
 	
+	public KolejkaLifoDlugoscZmienna() {
+		this(30);
+	}
+	
 	public KolejkaLifoDlugoscZmienna(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-null");
