@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public final class KolejkaFifoDlStala implements KolejkaInter {
+public final class KolejkaFifoDlugoscStala implements KolejkaZgloszenInt {
 	private final int dlugosc;
 	
 	private final Zgloszenie[] bufor;
@@ -8,18 +8,19 @@ public final class KolejkaFifoDlStala implements KolejkaInter {
 	private int iWstaw, iUsun;
 	private int stan;
 	
-	public KolejkaFifoDlStala(final int dlugosc) {
+	public KolejkaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
-		// Wywolanie metody wstaw(), gdy iWstaw = iUsun - 1
+		// Dodatkowa komorka ze wzgledu na sposob dodawania elementow (wywolanie
+		// metody wstaw(), gdy iWstaw = iUsun - 1 bez niej zakonczyloby sie bledem)
 		bufor = new Zgloszenie[(this.dlugosc = dlugosc) + 1];
 		
 		iWstaw = iUsun = stan = 0;
 	}
 	
-	public KolejkaFifoDlStala(final Zgloszenie[] tablica) {
+	public KolejkaFifoDlugoscStala(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-null");
 		}
@@ -34,14 +35,13 @@ public final class KolejkaFifoDlStala implements KolejkaInter {
 		iUsun = 0;
 	}
 	
-	public KolejkaFifoDlStala(final KolejkaFifoDlStala kolejka) {
+	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
 		bufor = new Zgloszenie[(dlugosc = kolejka.dlugosc) + 1];
 		
-		// stan < kolejka.stan
 		for (stan = 0, iWstaw = kolejka.iUsun; stan < kolejka.stan; ++stan, ++iWstaw) {
 			if (iWstaw == bufor.length) {
 				iWstaw %= bufor.length;

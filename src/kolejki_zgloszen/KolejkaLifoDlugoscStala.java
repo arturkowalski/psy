@@ -1,14 +1,14 @@
 package kolejki_zgloszen;
 
-public final class KolejkaLifoDlZmienna implements KolejkaInter {
-	private int dlugosc;
+public final class KolejkaLifoDlugoscStala implements KolejkaZgloszenInt {
+	private final int dlugosc;
 	
-	private Zgloszenie[] bufor;
+	private final Zgloszenie[] bufor;
 	
 	private int indeks;
 	private int stan;
 	
-	public KolejkaLifoDlZmienna(final int dlugosc) {
+	public KolejkaLifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -18,7 +18,7 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 		indeks = stan = 0;
 	}
 	
-	public KolejkaLifoDlZmienna(final Zgloszenie[] tablica) {
+	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-null");
 		}
@@ -32,7 +32,7 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 		indeks = stan = tablica.length;
 	}
 	
-	public KolejkaLifoDlZmienna(final KolejkaLifoDlZmienna kolejka) {
+	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
@@ -46,16 +46,9 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 		indeks = stan = kolejka.bufor.length;
 	}
 	
-	public void wstaw(final Zgloszenie zgloszenie) {
-		if (indeks == dlugosc) {
-			Zgloszenie t[] = new Zgloszenie[2 * dlugosc];
-			
-			for (int i = dlugosc - 1; i >= 0; --i) {
-				t[i] = bufor[i];
-			}
-			
-			dlugosc <<= 1;
-			bufor = t;
+	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(dlugosc);
 		}
 		
 		bufor[indeks++] = zgloszenie;
@@ -63,7 +56,7 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 	}
 	
 	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
-		if (indeks == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
@@ -71,7 +64,7 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
-		if (indeks == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
@@ -89,7 +82,16 @@ public final class KolejkaLifoDlZmienna implements KolejkaInter {
 		return stan == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		// return indeks == dlugosc;
+		return stan == dlugosc;
+	}
+	
 	public int stan() {
 		return stan;
+	}
+	
+	public int dlugosc() {
+		return dlugosc;
 	}
 }

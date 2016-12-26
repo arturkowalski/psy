@@ -8,7 +8,8 @@ public final class Numery {
 	public Numery(final int pierwszy, final int roznica) {
 		this.pierwszy = pierwszy;
 		this.roznica = roznica;
-		this.nastepny = pierwszy - roznica;
+		
+		nastepny = pierwszy - roznica;
 	}
 	
 	public int nastepny() {

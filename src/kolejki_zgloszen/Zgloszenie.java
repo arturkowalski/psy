@@ -6,7 +6,7 @@ public final class Zgloszenie {
 	private final int priorytet;
 	
 	public Zgloszenie(final Numery numery, final double czasNadejscia, final int priorytet) {
-		if (czasNadejscia < .0) {
+		if (czasNadejscia < 0.0) {
 			throw new IllegalArgumentException("Czas nadejscia mniejszy niz 0");
 		}
 		
@@ -14,7 +14,8 @@ public final class Zgloszenie {
 			throw new IllegalArgumentException("Priorytet spoza zakresu");
 		}
 		
-		this.numer = numery.nastepny();
+		numer = numery.nastepny();
+		
 		this.czasNadejscia = czasNadejscia;
 		this.priorytet = priorytet;
 	}

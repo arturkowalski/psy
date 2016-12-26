@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public final class KolejkaFifoDlZmienna implements KolejkaInter {
+public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszenInt {
 	private int dlugosc;
 	
 	private Zgloszenie[] bufor;
@@ -9,7 +9,7 @@ public final class KolejkaFifoDlZmienna implements KolejkaInter {
 	private int stan;
 	
 	// Wyjsciowa dugosc moze sie tylko zwiekszyc
-	public KolejkaFifoDlZmienna(final int dlugosc) {
+	public KolejkaFifoDlugoscZmienna(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -19,7 +19,7 @@ public final class KolejkaFifoDlZmienna implements KolejkaInter {
 		iWstaw = iUsun = stan = 0;
 	}
 	
-	public KolejkaFifoDlZmienna(final Zgloszenie[] tablica) {
+	public KolejkaFifoDlugoscZmienna(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-null");
 		}
@@ -34,14 +34,13 @@ public final class KolejkaFifoDlZmienna implements KolejkaInter {
 		iUsun = 0;
 	}
 	
-	public KolejkaFifoDlZmienna(final KolejkaFifoDlZmienna kolejka) {
+	public KolejkaFifoDlugoscZmienna(final KolejkaFifoDlugoscZmienna kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
 		bufor = new Zgloszenie[(dlugosc = kolejka.dlugosc) + 1];
 		
-		// stan < kolejka.stan
 		for (stan = 0, iWstaw = kolejka.iUsun; stan < kolejka.stan; ++stan, ++iWstaw) {
 			if (iWstaw == bufor.length) {
 				iWstaw %= bufor.length;
