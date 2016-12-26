@@ -107,19 +107,19 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 		return z;
 	}
 	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[iu];
-	}
-	
 	public boolean kolejkaPusta() {
 		return stan == 0;
 	}
 	
 	public int stan() {
 		return stan;
+	}
+	
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[iu];
 	}
 }

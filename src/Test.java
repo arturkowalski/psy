@@ -12,8 +12,8 @@ public class Test {
 		int i = 1;
 		char z = ' ';
 		
-		for ( ; i <= 13; ++i) {
-			kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
+		while (!kolejka.kolejkaPelna()) {
+			kolejka.wstaw(new Zgloszenie(postep, (double) i++, priorytety.nextInt(10) + 1));
 		}
 		
 		for (i = kolejka.stan(); i > 0; --i) {

@@ -16,7 +16,7 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		bufor[j] = z;
 	}
 	
-	private void przywrocUkladOdDolu(int i) {
+	private void przywrocStruktureOdDolu(int i) {
 		while (i > 1 && porownanie(i >> 1, i)) {
 			zamien(i, i >> 1);
 			
@@ -24,7 +24,7 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		}
 	}
 	
-	private void przywrocUkladOdGory(int i) {
+	private void przywrocStruktureOdGory(int i) {
 		while (i << 1 <= stan) {
 			int j = i << 1;
 			
@@ -40,6 +40,29 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 			
 			i = j;
 		}
+	}
+	
+	private boolean strukturaPoddrzewaPoprawna(int k) {
+		if (k > stan) {
+			return true;
+		}
+		
+		int liscLewy = k << 1;
+		int liscPrawy = (k << 1) + 1;
+		
+		if (liscLewy  <= stan && porownanie(k, liscLewy))  {
+			return false;
+		}
+		
+		if (liscPrawy <= stan && porownanie(k, liscPrawy)) {
+			return false;
+		}
+		
+		return strukturaPoddrzewaPoprawna(liscLewy) && strukturaPoddrzewaPoprawna(liscPrawy);
+	}
+	
+	private boolean strukturaDrzewaPoprawna() {
+		return strukturaPoddrzewaPoprawna(1);
 	}
 	
 	public KolejkaPriorytetowaDlugoscStala(final int dlugosc) {
@@ -60,7 +83,9 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		
 		bufor[++stan] = zgloszenie;
 		
-		przywrocUkladOdDolu(stan);
+		przywrocStruktureOdDolu(stan);
+		
+		//assert strukturaDrzewaPoprawna();
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -72,11 +97,21 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		
 		zamien(1, stan--);
 		
-		przywrocUkladOdGory(1);
+		przywrocStruktureOdGory(1);
 		
 		bufor[stan + 1] = null;
 		
+		//assert strukturaDrzewaPoprawna();
+		
 		return z;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public int stan() {
+		return stan;
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
@@ -87,16 +122,8 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		return bufor[1];
 	}
 	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return stan == bufor.length - 1;
-	}
-	
-	public int stan() {
-		return stan;
 	}
 	
 	public int dlugosc() {

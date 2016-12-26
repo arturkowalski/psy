@@ -87,19 +87,19 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaZgloszen {
 		return z;
 	}
 	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (w == 0) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[w - 1];
-	}
-	
 	public boolean kolejkaPusta() {
 		return w == 0;
 	}
 	
 	public int stan() {
 		return w;
+	}
+	
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (w == 0) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[w - 1];
 	}
 }

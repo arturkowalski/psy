@@ -32,7 +32,7 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		bufor[j] = z;
 	}
 	
-	private void przywrocUkladOdDolu(int i) {
+	private void przywrocStruktureOdDolu(int i) {
 		while (i > 1 && porownanie(i >> 1, i)) {
 			zamien(i, i >> 1);
 			
@@ -40,7 +40,7 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		}
 	}
 	
-	private void przywrocUkladOdGory(int i) {
+	private void przywrocStruktureOdGory(int i) {
 		while (i << 1 <= stan) {
 			int j = i << 1;
 			
@@ -56,6 +56,29 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 			
 			i = j;
 		}
+	}
+	
+	private boolean strukturaPoddrzewaPoprawna(int k) {
+		if (k > stan) {
+			return true;
+		}
+		
+		int liscLewy = k << 1;
+		int liscPrawy = (k << 1) + 1;
+		
+		if (liscLewy  <= stan && porownanie(k, liscLewy))  {
+			return false;
+		}
+		
+		if (liscPrawy <= stan && porownanie(k, liscPrawy)) {
+			return false;
+		}
+		
+		return strukturaPoddrzewaPoprawna(liscLewy) && strukturaPoddrzewaPoprawna(liscPrawy);
+	}
+	
+	private boolean strukturaDrzewaPoprawna() {
+		return strukturaPoddrzewaPoprawna(1);
 	}
 	
 	public KolejkaPriorytetowaDlugoscZmienna(final int dlugosc) {
@@ -80,7 +103,9 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		
 		bufor[++stan] = zgloszenie;
 		
-		przywrocUkladOdDolu(stan);
+		przywrocStruktureOdDolu(stan);
+		
+		//assert strukturaDrzewaPoprawna();
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -92,13 +117,15 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		
 		zamien(1, stan--);
 		
-		przywrocUkladOdGory(1);
+		przywrocStruktureOdGory(1);
 		
 		bufor[stan + 1] = null;
 		
 		if ((stan > 0) && (stan == (bufor.length - 1) >> 2)) {
 			zmienDlugosc(bufor.length >> 1);
 		}
+		
+		//assert strukturaDrzewaPoprawna();
 		
 		return z;
 	}

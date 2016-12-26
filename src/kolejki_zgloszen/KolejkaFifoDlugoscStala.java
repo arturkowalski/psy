@@ -77,6 +77,14 @@ public final class KolejkaFifoDlugoscStala implements KolejkaZgloszen {
 		return z;
 	}
 	
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public int stan() {
+		return stan;
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (iu == iw) {
 			throw new KolejkaPustaWyj();
@@ -85,16 +93,8 @@ public final class KolejkaFifoDlugoscStala implements KolejkaZgloszen {
 		return bufor[iu];
 	}
 	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return stan == bufor.length;
-	}
-	
-	public int stan() {
-		return stan;
 	}
 	
 	public int dlugosc() {

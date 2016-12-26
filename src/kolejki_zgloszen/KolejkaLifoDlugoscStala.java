@@ -63,6 +63,14 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 		return z;
 	}
 	
+	public boolean kolejkaPusta() {
+		return w == 0;
+	}
+	
+	public int stan() {
+		return w;
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
@@ -71,16 +79,8 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 		return bufor[w - 1];
 	}
 	
-	public boolean kolejkaPusta() {
-		return w == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return w == bufor.length;
-	}
-	
-	public int stan() {
-		return w;
 	}
 	
 	public int dlugosc() {
