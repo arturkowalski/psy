@@ -1,21 +1,18 @@
 package kolejki_zgloszen;
 
 public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
-	private final int dlugosc;
-	
 	private final Zgloszenie[] bufor;
 	
-	private int indeks;
-	private int stan;
+	private int w;
 	
 	public KolejkaLifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
-		bufor = new Zgloszenie[this.dlugosc = dlugosc];
+		bufor = new Zgloszenie[dlugosc];
 		
-		indeks = stan = 0;
+		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -23,13 +20,13 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Tablica-null");
 		}
 		
-		bufor = new Zgloszenie[dlugosc = tablica.length];
+		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = dlugosc - 1; i >= 0; --i) {
+		for (int i = bufor.length - 1; i >= 0; --i) {
 			bufor[i] = tablica[i];
 		}
 		
-		indeks = stan = tablica.length;
+		w = tablica.length;
 	}
 	
 	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
@@ -37,30 +34,21 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
-		bufor = new Zgloszenie[dlugosc = kolejka.bufor.length];
+		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = dlugosc - 1; i >= 0; --i) {
+		for (int i = bufor.length - 1; i >= 0; --i) {
 			bufor[i] = kolejka.bufor[i];
 		}
 		
-		indeks = stan = kolejka.bufor.length;
+		w = kolejka.bufor.length;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(dlugosc);
+			throw new KolejkaPelnaWyj(bufor.length);
 		}
 		
-		bufor[indeks++] = zgloszenie;
-		++stan;
-	}
-	
-	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[indeks - 1];
+		bufor[w++] = zgloszenie;
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -68,30 +56,34 @@ public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
 			throw new KolejkaPustaWyj();
 		}
 		
-		Zgloszenie z = bufor[--indeks];
+		Zgloszenie z = bufor[--w];
 		
-		bufor[indeks] = null;
-		
-		--stan;
+		bufor[w] = null;
 		
 		return z;
 	}
 	
+	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[w - 1];
+	}
+	
 	public boolean kolejkaPusta() {
-		// return indeks == 0;
-		return stan == 0;
+		return w == 0;
 	}
 	
 	public boolean kolejkaPelna() {
-		// return indeks == dlugosc;
-		return stan == dlugosc;
+		return w == bufor.length;
 	}
 	
 	public int stan() {
-		return stan;
+		return w;
 	}
 	
 	public int dlugosc() {
-		return dlugosc;
+		return bufor.length;
 	}
 }

@@ -36,7 +36,7 @@ public final class KolejkaFifoDlugoscStala implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
-		bufor = new Zgloszenie[kolejka.dlugosc()];
+		bufor = new Zgloszenie[kolejka.bufor.length];
 		
 		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {
 			bufor[iw] = kolejka.bufor[iw % bufor.length];

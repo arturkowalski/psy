@@ -6,15 +6,13 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 	private int iw, iu;
 	private int stan;
 	
-	int dlugosc() {
-		return bufor.length;
-	}
-	
 	private boolean kolejkaPelna() {
 		return stan == bufor.length;
 	}
 	
-	private void zmienDlugoscBufora(final int dl) {
+	private void zmienDlugosc(final int dl) {
+		assert dl >= stan;
+		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
 		for (int i = stan - 1; i >= 0; ++i) {
@@ -56,7 +54,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
-		bufor = new Zgloszenie[kolejka.dlugosc() + 1];
+		bufor = new Zgloszenie[kolejka.bufor.length + 1];
 		
 		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {
 			if (iw == bufor.length) {
@@ -73,7 +71,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 	public void wstaw(final Zgloszenie zgloszenie) {
 		// if (stan == dlugosc && iu == 0) {
 		if (kolejkaPelna()) {
-			zmienDlugoscBufora(bufor.length << 1);
+			zmienDlugosc(bufor.length << 1);
 		}
 		
 		bufor[iw++] = zgloszenie;
@@ -100,7 +98,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaZgloszen {
 		}
 		
 		if (stan > 0 && stan == bufor.length >> 2) {
-			zmienDlugoscBufora(bufor.length >> 1);
+			zmienDlugosc(bufor.length >> 1);
 		}
 		
 		return z;

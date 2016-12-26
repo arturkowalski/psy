@@ -1,21 +1,34 @@
 package kolejki_zgloszen;
 
 public final class KolejkaLifoDlugoscZmienna implements KolejkaZgloszen {
-	private int dlugosc;
-	
 	private Zgloszenie[] bufor;
 	
-	private int indeks;
-	private int stan;
+	private int w;
+	
+	private boolean kolejkaPelna() {
+		return w == bufor.length;
+	}
+	
+	private void zmienDlugosc(final int dl) {
+		assert dl >= w;
+		
+		Zgloszenie tab[] = new Zgloszenie[dl];
+		
+		for (int i = w - 1; i >= 0; --i) {
+			tab[i] = bufor[i];
+		}
+		
+		bufor = tab;
+	}
 	
 	public KolejkaLifoDlugoscZmienna(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
-		bufor = new Zgloszenie[this.dlugosc = dlugosc];
+		bufor = new Zgloszenie[dlugosc];
 		
-		indeks = stan = 0;
+		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscZmienna(final Zgloszenie[] tablica) {
@@ -23,13 +36,13 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Tablica-null");
 		}
 		
-		bufor = new Zgloszenie[dlugosc = tablica.length];
+		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = dlugosc - 1; i >= 0; --i) {
+		for (int i = bufor.length - 1; i >= 0; --i) {
 			bufor[i] = tablica[i];
 		}
 		
-		indeks = stan = tablica.length;
+		w = tablica.length;
 	}
 	
 	public KolejkaLifoDlugoscZmienna(final KolejkaLifoDlugoscZmienna kolejka) {
@@ -37,59 +50,52 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaZgloszen {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
-		bufor = new Zgloszenie[dlugosc = kolejka.bufor.length];
+		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = dlugosc - 1; i >= 0; --i) {
+		for (int i = bufor.length - 1; i >= 0; --i) {
 			bufor[i] = kolejka.bufor[i];
 		}
 		
-		indeks = stan = kolejka.bufor.length;
+		w = kolejka.bufor.length;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		if (indeks == dlugosc) {
-			Zgloszenie t[] = new Zgloszenie[2 * dlugosc];
-			
-			for (int i = dlugosc - 1; i >= 0; --i) {
-				t[i] = bufor[i];
-			}
-			
-			dlugosc <<= 1;
-			bufor = t;
+		if (kolejkaPelna()) {
+			zmienDlugosc(bufor.length << 1);
 		}
 		
-		bufor[indeks++] = zgloszenie;
-		++stan;
-	}
-	
-	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
-		if (indeks == 0) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[indeks - 1];
+		bufor[w++] = zgloszenie;
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
-		if (indeks == 0) {
+		if (w == 0) {
 			throw new KolejkaPustaWyj();
 		}
 		
-		Zgloszenie z = bufor[--indeks];
+		Zgloszenie z = bufor[--w];
 		
-		bufor[indeks] = null;
+		bufor[w] = null;
 		
-		--stan;
+		if (w > 0 && w == bufor.length >> 2) {
+			zmienDlugosc(bufor.length >> 1);
+		}
 		
 		return z;
 	}
 	
+	public Zgloszenie doUsuniecia() throws KolejkaPustaWyj {
+		if (w == 0) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[w - 1];
+	}
+	
 	public boolean kolejkaPusta() {
-		// return indeks == 0;
-		return stan == 0;
+		return w == 0;
 	}
 	
 	public int stan() {
-		return stan;
+		return w;
 	}
 }
