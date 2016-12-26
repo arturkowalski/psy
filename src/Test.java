@@ -4,13 +4,14 @@ import java.util.Random;
 
 public class Test {
 	public static void main(String[] args) {
-		KolejkaPriorytetowaDlugoscStala kolejka = new KolejkaPriorytetowaDlugoscStala(10);
+		KolejkaFifoDlugoscStala kolejka = new KolejkaFifoDlugoscStala(10);
 		Numery postep = new Numery(1, 1);
 		Random priorytety = new Random();
 		
+		int i = 1;
 		char z = ' ';
 		
-		for (int i = 1; i <= 15; ++i) {
+		for ( ; i <= 10; ++i) {
 			try {
 				kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
 			}
@@ -19,7 +20,15 @@ public class Test {
 			}
 		}
 		
-		for (int i = kolejka.stan(); i > 0; --i) {
+		try {
+			kolejka.usun();
+			kolejka.wstaw(new Zgloszenie(postep, (double) i, priorytety.nextInt(10) + 1));
+		}
+		catch (final KolejkaPustaWyj | KolejkaPelnaWyj wyj) {
+			System.out.println(wyj.toString());
+		}
+		
+		for (i = kolejka.stan(); i > 0; --i) {
 			try {
 				System.out.println(kolejka.usun().toString());
 			}

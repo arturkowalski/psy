@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszenInt {
+public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 	private final int dlugosc;
 	
 	private final Zgloszenie[] bufor;
