@@ -5,14 +5,14 @@ import java.util.Random;
 public class Test {
 	public static void main(String[] args) {
 		KolejkaPriorytetowaLifoDlugoscZmienna kolejka = new KolejkaPriorytetowaLifoDlugoscZmienna(10);
-		Numery postep = new Numery(1, 1);
+		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
 		Random priorytety = new Random();
 		
 		char z = ' ';
 		
 		while (kolejka.stan() < 30) {
-			kolejka.wstaw(new Zgloszenie(postep.nastepny(), zegar.czasOdStartu(),
+			kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(),
 				priorytety.nextInt(10) + 1));
 		}
 		

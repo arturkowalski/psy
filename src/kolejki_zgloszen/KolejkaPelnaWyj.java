@@ -2,7 +2,6 @@ package kolejki_zgloszen;
 
 public final class KolejkaPelnaWyj extends RuntimeException {
 	private final int dlugosc;
-	
 	private final Zgloszenie zgloszenie;
 	
 	public KolejkaPelnaWyj(final int dlugosc, final Zgloszenie zgloszenie) {
