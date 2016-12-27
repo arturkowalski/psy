@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Test {
 	public static void main(String[] args) {
-		KolejkaPriorytetowaFifoDlugoscZmienna kolejka = new KolejkaPriorytetowaFifoDlugoscZmienna(10);
+		KolejkaPriorytetowaLifoDlugoscZmienna kolejka = new KolejkaPriorytetowaLifoDlugoscZmienna(10);
 		Numery postep = new Numery(1, 1);
 		Zegar zegar = new Zegar();
 		Random priorytety = new Random();
