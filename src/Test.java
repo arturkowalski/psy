@@ -1,18 +1,17 @@
 import kolejki_zgloszen.*;
 
 import java.util.Random;
-import java.io.IOException;
 
 public class Test {
 	public static void main(String[] args) {
-		KolejkaPriorytetowaDlugoscStala kolejka = new KolejkaPriorytetowaDlugoscStala(1000000);
+		KolejkaPriorytetowaFifoDlugoscZmienna kolejka = new KolejkaPriorytetowaFifoDlugoscZmienna(10);
 		Numery postep = new Numery(1, 1);
 		Zegar zegar = new Zegar();
 		Random priorytety = new Random();
 		
 		char z = ' ';
 		
-		while (!kolejka.kolejkaPelna()) {
+		while (kolejka.stan() < 30) {
 			kolejka.wstaw(new Zgloszenie(postep.nastepny(), zegar.czasOdStartu(),
 				priorytety.nextInt(10) + 1));
 		}

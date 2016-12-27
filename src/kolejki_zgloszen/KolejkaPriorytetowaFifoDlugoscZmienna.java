@@ -1,12 +1,30 @@
 package kolejki_zgloszen;
 
-public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
-	private final Zgloszenie[] bufor;
+public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
+	private Zgloszenie[] bufor;
 	
 	private int stan;
 	
+	private boolean kolejkaPelna() {
+		return stan == bufor.length - 1;
+	}
+	
+	private void zmienDlugosc(int dl) {
+		assert dl > stan;
+		
+		Zgloszenie[] tab = new Zgloszenie[dl];
+		
+		for (int i = 1; i <= stan; ++i) {
+			tab[i] = bufor[i];
+		}
+		
+		bufor = tab;
+	}
+	
 	private boolean porownanie(int i, int j) {
-		return bufor[i].priorytet() < bufor[j].priorytet();
+		//return bufor[i].priorytet() < bufor[j].priorytet();
+		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
+			== bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
 	}
 	
 	private void zamien(int i, int j) {
@@ -65,7 +83,7 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KolejkaPriorytetowaDlugoscStala(final int dlugosc) {
+	public KolejkaPriorytetowaFifoDlugoscZmienna(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -76,9 +94,13 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		stan = 0;
 	}
 	
+	public KolejkaPriorytetowaFifoDlugoscZmienna() {
+		this(30);
+	}
+	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
+			zmienDlugosc(bufor.length << 1);
 		}
 		
 		bufor[++stan] = zgloszenie;
@@ -101,17 +123,13 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		
 		bufor[stan + 1] = null;
 		
+		if ((stan > 0) && (stan == (bufor.length - 1) >> 2)) {
+			zmienDlugosc(bufor.length >> 1);
+		}
+		
 		//assert strukturaDrzewaPoprawna();
 		
 		return z;
-	}
-	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
-	public int stan() {
-		return stan;
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
@@ -122,8 +140,12 @@ public final class KolejkaPriorytetowaDlugoscStala implements KolejkaZgloszen {
 		return bufor[1];
 	}
 	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length - 1;
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public int stan() {
+		return stan;
 	}
 	
 	public int dlugosc() {

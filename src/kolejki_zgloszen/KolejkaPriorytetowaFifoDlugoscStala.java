@@ -1,28 +1,14 @@
 package kolejki_zgloszen;
 
-public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen {
-	private Zgloszenie[] bufor;
+public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
+	private final Zgloszenie[] bufor;
 	
 	private int stan;
 	
-	private boolean kolejkaPelna() {
-		return stan == bufor.length - 1;
-	}
-	
-	private void zmienDlugosc(int dl) {
-		assert dl > stan;
-		
-		Zgloszenie[] tab = new Zgloszenie[dl];
-		
-		for (int i = 1; i <= stan; ++i) {
-			tab[i] = bufor[i];
-		}
-		
-		bufor = tab;
-	}
-	
 	private boolean porownanie(int i, int j) {
-		return bufor[i].priorytet() < bufor[j].priorytet();
+		//return bufor[i].priorytet() < bufor[j].priorytet();
+		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
+			==  bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
 	}
 	
 	private void zamien(int i, int j) {
@@ -81,7 +67,7 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KolejkaPriorytetowaDlugoscZmienna(final int dlugosc) {
+	public KolejkaPriorytetowaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -92,20 +78,16 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		stan = 0;
 	}
 	
-	public KolejkaPriorytetowaDlugoscZmienna() {
-		this(30);
-	}
-	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			zmienDlugosc(bufor.length << 1);
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
 		}
 		
 		bufor[++stan] = zgloszenie;
 		
 		przywrocStruktureOdDolu(stan);
 		
-		//assert strukturaDrzewaPoprawna();
+		assert strukturaDrzewaPoprawna();
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -121,13 +103,17 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		
 		bufor[stan + 1] = null;
 		
-		if ((stan > 0) && (stan == (bufor.length - 1) >> 2)) {
-			zmienDlugosc(bufor.length >> 1);
-		}
-		
-		//assert strukturaDrzewaPoprawna();
+		assert strukturaDrzewaPoprawna();
 		
 		return z;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public int stan() {
+		return stan;
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
@@ -138,12 +124,8 @@ public final class KolejkaPriorytetowaDlugoscZmienna implements KolejkaZgloszen 
 		return bufor[1];
 	}
 	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
-	public int stan() {
-		return stan;
+	public boolean kolejkaPelna() {
+		return stan == bufor.length - 1;
 	}
 	
 	public int dlugosc() {

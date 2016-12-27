@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public final class KolejkaLifoDlugoscStala implements KolejkaZgloszen {
+public final class KolejkaLifoDlugoscStala implements Kolejka {
 	private final Zgloszenie[] bufor;
 	
 	private int w;

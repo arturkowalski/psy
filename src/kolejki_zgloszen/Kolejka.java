@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public interface KolejkaZgloszen {
+public interface Kolejka {
 	void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj;
 	
 	Zgloszenie usun() throws KolejkaPustaWyj;
