@@ -42,7 +42,8 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 			bufor[iw] = kolejka.bufor[iw % bufor.length];
 		}
 		
-		iw = kolejka.iw; iu = kolejka.iu;
+		iw = kolejka.iw;
+		iu = kolejka.iu;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {

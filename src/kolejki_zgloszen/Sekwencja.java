@@ -2,6 +2,7 @@ package kolejki_zgloszen;
 
 public final class Sekwencja {
 	private final int pierwszy, roznica;
+	
 	private int nastepny;
 	
 	private boolean add(int a, int b) {

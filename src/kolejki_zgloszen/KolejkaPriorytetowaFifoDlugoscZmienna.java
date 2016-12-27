@@ -98,6 +98,24 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		this(30);
 	}
 	
+	public KolejkaPriorytetowaFifoDlugoscZmienna(Zgloszenie[] tablica) {
+		bufor = new Zgloszenie[(stan = tablica.length) + 1];
+		
+		for (int i = stan - 1; i >= 0; --i) {
+			bufor[i + 1] = tablica[i];
+		}
+		
+		for (int k = stan >> 1; k >= 1; --k) {
+			przywrocStruktureOdGory(k);
+		}
+		
+		assert strukturaDrzewaPoprawna();
+	}
+	
+	public KolejkaPriorytetowaFifoDlugoscZmienna(KolejkaPriorytetowaFifoDlugoscZmienna kolejka) {
+		this(kolejka.bufor);
+	}
+	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
 			zmienDlugosc(bufor.length << 1);

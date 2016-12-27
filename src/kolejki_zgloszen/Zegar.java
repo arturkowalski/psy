@@ -8,8 +8,6 @@ public final class Zegar {
 	}
 	
 	public double czasOdStartu() {
-		long t = System.currentTimeMillis();
-		
-		return (t - t0) / 1000.0;
+		return (System.currentTimeMillis() - t0) / 1000.0;
 	}
 }
