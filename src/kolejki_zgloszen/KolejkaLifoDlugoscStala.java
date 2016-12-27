@@ -17,7 +17,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 	
 	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
 		if (tablica == null) {
-			throw new IllegalArgumentException("Tablica-null");
+			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[tablica.length];
@@ -31,7 +31,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 	
 	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-null");
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];

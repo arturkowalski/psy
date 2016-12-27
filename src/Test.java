@@ -2,7 +2,6 @@ import kolejki_zgloszen.*;
 
 import java.util.Random;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
 
 public class Test {
 	public static void main(String[] args) {

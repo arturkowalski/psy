@@ -78,7 +78,11 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		stan = 0;
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscStala(Zgloszenie[] tablica) {
+	public KolejkaPriorytetowaFifoDlugoscStala(final Zgloszenie[] tablica) {
+		if (tablica == null) {
+			throw new IllegalArgumentException("Tablica-parametr rowna null");
+		}
+		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
 		
 		for (int i = stan - 1; i >= 0; --i) {
@@ -92,8 +96,22 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		assert strukturaDrzewaPoprawna();
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscStala(KolejkaPriorytetowaFifoDlugoscStala kolejka) {
-		this(kolejka.bufor);
+	public KolejkaPriorytetowaFifoDlugoscStala(final KolejkaPriorytetowaFifoDlugoscStala kolejka) {
+		if (kolejka == null) {
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+		}
+		
+		bufor = new Zgloszenie[(stan = kolejka.bufor.length) + 1];
+		
+		for (int i = stan - 1; i >= 0; --i) {
+			bufor[i + 1] = kolejka.bufor[i];
+		}
+		
+		for (int k = stan >> 1; k >= 1; --k) {
+			przywrocStruktureOdGory(k);
+		}
+		
+		assert strukturaDrzewaPoprawna();
 	}
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
