@@ -5,7 +5,7 @@ public final class Zgloszenie {
 	private final double czasNadejscia;
 	private final int priorytet;
 	
-	public Zgloszenie(final Numery numery, final double czasNadejscia, final int priorytet) {
+	public Zgloszenie(final int numer, final double czasNadejscia, final int priorytet) {
 		if (czasNadejscia < 0.0) {
 			throw new IllegalArgumentException("Czas nadejscia mniejszy niz 0");
 		}
@@ -14,8 +14,7 @@ public final class Zgloszenie {
 			throw new IllegalArgumentException("Priorytet spoza zakresu");
 		}
 		
-		numer = numery.nastepny();
-		
+		this.numer = numer;
 		this.czasNadejscia = czasNadejscia;
 		this.priorytet = priorytet;
 	}
@@ -33,7 +32,6 @@ public final class Zgloszenie {
 	}
 	
 	public String toString() {
-		return "Zgloszenie numer " + numer + " (czas nadejscia rowny " + czasNadejscia +
-			", priorytet - " + priorytet + ")";
+		return "Zgloszenie " + numer + "/" + czasNadejscia + "/" + priorytet;
 	}
 }
