@@ -15,7 +15,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
-		for (int i = stan - 1; i >= 0; ++i) {
+		for (int i = stan - 1; i >= 0; --i) {
 			tab[i] = bufor[(iu + i) % bufor.length];
 		}
 		
@@ -29,7 +29,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
-		bufor = new Zgloszenie[dlugosc + 1];
+		bufor = new Zgloszenie[dlugosc];
 		
 		iw = iu = stan = 0;
 	}
@@ -43,7 +43,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 			throw new IllegalArgumentException("Tablica-null");
 		}
 		
-		bufor = new Zgloszenie[tablica.length + 1];
+		bufor = new Zgloszenie[tablica.length];
 		
 		for (int i = bufor.length - 1; i >= 0; --i) {
 			bufor[i] = tablica[i];
@@ -58,14 +58,10 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 			throw new IllegalArgumentException("Kolejka-null");
 		}
 		
-		bufor = new Zgloszenie[kolejka.bufor.length + 1];
+		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {
-			if (iw == bufor.length) {
-				iw %= bufor.length;
-			}
-			
-			bufor[iw] = kolejka.bufor[iw];
+		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {			
+			bufor[iw] = kolejka.bufor[iw %= bufor.length];
 		}
 		
 		iw = kolejka.iw;

@@ -78,6 +78,24 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		stan = 0;
 	}
 	
+	public KolejkaPriorytetowaFifoDlugoscStala(Zgloszenie[] tablica) {
+		bufor = new Zgloszenie[(stan = tablica.length) + 1];
+		
+		for (int i = stan - 1; i >= 0; --i) {
+			bufor[i + 1] = tablica[i];
+		}
+		
+		for (int k = stan >> 1; k >= 1; --k) {
+			przywrocStruktureOdGory(k);
+		}
+		
+		assert strukturaDrzewaPoprawna();
+	}
+	
+	public KolejkaPriorytetowaFifoDlugoscStala(KolejkaPriorytetowaFifoDlugoscStala kolejka) {
+		this(kolejka.bufor);
+	}
+	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
 			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
