@@ -1,10 +1,34 @@
 package kolejki_zgloszen;
 
-public final class KolejkaFifoDlugoscStala implements Kolejka {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public final class KolejkaFifoDlugoscStala implements Kolejka, Iterable<Zgloszenie> {
 	private final Zgloszenie[] bufor;
 	
 	private int iw, iu;
 	private int stan;
+	
+	private class KolejkaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		// Konstruktor zbedny (?)
+		private KolejkaFifoDlugoscStalaIt() {
+			i = 0;
+		}
+		
+		public boolean hasNext() {
+			return i < stan;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i++];
+		}
+	}
 	
 	public KolejkaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
@@ -100,5 +124,9 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 	
 	public int dlugosc() {
 		return bufor.length;
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscStalaIt();
 	}
 }
