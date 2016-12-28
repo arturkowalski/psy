@@ -116,7 +116,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
+			throw new KolejkaPelnaWyj(bufor.length - 1, zgloszenie);
 		}
 		
 		bufor[++stan] = zgloszenie;

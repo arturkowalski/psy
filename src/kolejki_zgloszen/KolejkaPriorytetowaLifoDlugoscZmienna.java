@@ -143,7 +143,7 @@ public class KolejkaPriorytetowaLifoDlugoscZmienna {
 		
 		przywrocStruktureOdDolu(stan);
 		
-		//assert strukturaDrzewaPoprawna();
+		assert strukturaDrzewaPoprawna();
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -163,7 +163,7 @@ public class KolejkaPriorytetowaLifoDlugoscZmienna {
 			zmienDlugosc(bufor.length >> 1);
 		}
 		
-		//assert strukturaDrzewaPoprawna();
+		assert strukturaDrzewaPoprawna();
 		
 		return z;
 	}

@@ -36,16 +36,16 @@ public class Test {
 		//kolejka4 = new KolejkaLifoDlugoscZmienna(zgloszenia);
 		//kolejka5 = new KolejkaPriorytetowaFifoDlugoscStala(zgloszenia);
 		//kolejka6 = new KolejkaPriorytetowaFifoDlugoscZmienna(zgloszenia);
-		//kolejka7 = new KolejkaPriorytetowaLifoDlugoscStala(zgloszenia);
-		kolejka8 = new KolejkaPriorytetowaLifoDlugoscZmienna(zgloszenia);
+		kolejka7 = new KolejkaPriorytetowaLifoDlugoscStala(zgloszenia);
+		//kolejka8 = new KolejkaPriorytetowaLifoDlugoscZmienna(zgloszenia);
 		
-		for (i = kolejka8.stan(); i <= 1000000; ++i) {
-			kolejka8.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(),
+		for (i = kolejka7.stan(); i <= 1000000; ++i) {
+			kolejka7.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(),
 				priorytety.nextInt(10) + 1));
 		}
 		
-		while (!kolejka8.kolejkaPusta()) {
-			System.out.println(kolejka8.usun().toString());
+		while (!kolejka7.kolejkaPusta()) {
+			System.out.println(kolejka7.usun().toString());
 		}
 		
 		System.out.println("\nAby przerwac prace programu, wcisnij q");
