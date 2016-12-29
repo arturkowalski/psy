@@ -130,15 +130,15 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		return stan;
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscZmiennaIt();
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
 		return bufor[iu];
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaFifoDlugoscZmiennaIt();
 	}
 }

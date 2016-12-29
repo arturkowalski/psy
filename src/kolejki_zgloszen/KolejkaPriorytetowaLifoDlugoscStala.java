@@ -3,10 +3,30 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public abstract class KolejkaPriorytetowaLifoDlugoscStala {
+public final class KolejkaPriorytetowaLifoDlugoscStala implements Kolejka {
 	private final Zgloszenie[] bufor;
 	
 	private int stan;
+	
+	private class KolejkaPriorytetowaLifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+		private KolejkaPriorytetowaLifoDlugoscStala kolejka;
+		
+		private KolejkaPriorytetowaLifoDlugoscStalaIt() {
+			kolejka = new KolejkaPriorytetowaLifoDlugoscStala(KolejkaPriorytetowaLifoDlugoscStala.this);
+		}
+		
+		public boolean hasNext() {
+			return !kolejka.kolejkaPusta();
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()){
+				throw new NoSuchElementException();
+			}
+			
+			return kolejka.usun();
+		}
+	}
 	
 	private boolean porownanie(int i, int j) {
 		//return bufor[i].priorytet() < bufor[j].priorytet();
@@ -151,6 +171,10 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 	
 	public int stan() {
 		return stan;
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaLifoDlugoscStalaIt();
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {

@@ -105,6 +105,10 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		return stan;
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscStalaIt();
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (iu == iw) {
 			throw new KolejkaPustaWyj();
@@ -119,9 +123,5 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 	
 	public int dlugosc() {
 		return bufor.length;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaFifoDlugoscStalaIt();
 	}
 }

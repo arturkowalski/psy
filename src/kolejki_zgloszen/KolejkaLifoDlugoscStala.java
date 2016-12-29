@@ -102,15 +102,15 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return bufor[w - 1];
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscStalaIt();
+	}
+	
 	public boolean kolejkaPelna() {
 		return w == bufor.length;
 	}
 	
 	public int dlugosc() {
 		return bufor.length;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscStalaIt();
 	}
 }
