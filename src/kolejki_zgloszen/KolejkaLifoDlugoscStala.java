@@ -45,9 +45,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		w = tablica.length;
 	}
@@ -59,9 +57,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = kolejka.bufor[i];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		w = kolejka.bufor.length;
 	}

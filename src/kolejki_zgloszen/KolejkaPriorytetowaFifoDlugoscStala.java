@@ -29,7 +29,6 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 	}
 	
 	private boolean porownanie(int i, int j) {
-		//return bufor[i].priorytet() < bufor[j].priorytet();
 		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
 			==  bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
 	}
@@ -42,16 +41,15 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 	}
 	
 	private void przywrocStruktureOdDolu(int i) {
-		while (i > 1 && porownanie(i >> 1, i)) {
-			zamien(i, i >> 1);
-			
-			i >>= 1;
+		while (i > 1 && porownanie(i / 2, i)) {
+			zamien(i, i / 2);
+			i /= 2;
 		}
 	}
 	
 	private void przywrocStruktureOdGory(int i) {
-		while (i << 1 <= stan) {
-			int j = i << 1;
+		while (2 * i <= stan) {
+			int j = 2 * i;
 			
 			if (j < stan && porownanie(j, j + 1)) {
 				++j;
@@ -72,8 +70,8 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 			return true;
 		}
 		
-		int liscLewy = k << 1;
-		int liscPrawy = (k << 1) + 1;
+		int liscLewy = 2 * k;
+		int liscPrawy = 2 * k + 1;
 		
 		if (liscLewy  <= stan && porownanie(k, liscLewy))  {
 			return false;
@@ -108,9 +106,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
 		
-		for (int i = stan - 1; i >= 0; --i) {
-			bufor[i + 1] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 1, tablica.length);
 		
 		for (int k = stan >> 1; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
@@ -126,9 +122,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = kolejka.bufor.length - 1; i >= 0; --i) {
-			bufor[i] = kolejka.bufor[i];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		stan = kolejka.stan;
 		

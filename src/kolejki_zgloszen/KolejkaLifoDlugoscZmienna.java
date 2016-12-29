@@ -37,9 +37,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
-		for (int i = w - 1; i >= 0; --i) {
-			tab[i] = bufor[i];
-		}
+		System.arraycopy(bufor, 0, tab, 0, w);
 		
 		bufor = tab;
 	}
@@ -65,9 +63,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		w = tablica.length;
 	}
@@ -79,16 +75,14 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = kolejka.bufor[i];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		w = kolejka.bufor.length;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
 		if (kolejkaPelna()) {
-			zmienDlugosc(bufor.length << 1);
+			zmienDlugosc(2 * bufor.length);
 		}
 		
 		bufor[w++] = zgloszenie;
@@ -103,8 +97,8 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor[w] = null;
 		
-		if (w > 0 && w == bufor.length >> 2) {
-			zmienDlugosc(bufor.length >> 1);
+		if (w > 0 && w == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
 		}
 		
 		return z;

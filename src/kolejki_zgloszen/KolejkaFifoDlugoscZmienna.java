@@ -64,9 +64,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		iw = stan = tablica.length;
 		iu = 0;
@@ -89,7 +87,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
 		if (kolejkaPelna()) {
-			zmienDlugosc(bufor.length << 1);
+			zmienDlugosc(2 * bufor.length);
 		}
 		
 		bufor[iw++] = zgloszenie;
@@ -115,8 +113,8 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 			iu = 0;
 		}
 		
-		if (stan > 0 && stan == bufor.length >> 2) {
-			zmienDlugosc(bufor.length >> 1);
+		if (stan > 0 && stan == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
 		}
 		
 		return z;
