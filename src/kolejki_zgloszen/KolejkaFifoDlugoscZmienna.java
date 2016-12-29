@@ -34,13 +34,22 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	private void zmienDlugosc(final int dl) {
-		assert dl >= stan;
+		assert dl != bufor.length && dl >= stan;
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
-		// arraycopy
-		for (int i = stan - 1; i >= 0; --i) {
-			tab[i] = bufor[(iu + i) % bufor.length];
+		if (dl > bufor.length) {
+			System.arraycopy(bufor, iu, tab, 0, stan -iu);
+			System.arraycopy(bufor, 0, tab, stan - iu, iu);
+		}
+		else {
+			if (iu + stan <= bufor.length) {
+				System.arraycopy(bufor, iu, tab, 0, stan);
+			}
+			else {
+				System.arraycopy(bufor, iu, tab, 0, bufor.length - iu);
+				System.arraycopy(bufor, 0, tab, bufor.length - iu, stan - bufor.length + iu);
+			}
 		}
 		
 		iw = stan;
@@ -92,11 +101,12 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		}
 		
 		bufor[iw++] = zgloszenie;
-		++stan;
 		
 		if (iw == bufor.length) {
 			iw = 0;
 		}
+		
+		++stan;
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -108,8 +118,6 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor[iu++] = null;
 		
-		--stan;
-		
 		if (iu == bufor.length) {
 			iu = 0;
 		}
@@ -117,6 +125,8 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		if (stan > 0 && stan == bufor.length / 4) {
 			zmienDlugosc(bufor.length / 2);
 		}
+		
+		--stan;
 		
 		return z;
 	}

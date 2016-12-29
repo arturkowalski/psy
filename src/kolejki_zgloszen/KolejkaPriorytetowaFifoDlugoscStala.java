@@ -108,7 +108,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 		
 		System.arraycopy(tablica, 0, bufor, 1, tablica.length);
 		
-		for (int k = stan >> 1; k >= 1; --k) {
+		for (int k = stan / 2; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
 		}
 		
