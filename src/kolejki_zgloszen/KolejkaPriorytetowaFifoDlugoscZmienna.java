@@ -1,6 +1,9 @@
 package kolejki_zgloszen;
 
-public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public abstract class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int stan;

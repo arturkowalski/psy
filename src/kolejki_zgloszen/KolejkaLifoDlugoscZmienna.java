@@ -1,9 +1,32 @@
 package kolejki_zgloszen;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int w;
+	
+	private class KolejkaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		private KolejkaLifoDlugoscZmiennaIt() {
+			i = w - 1;
+		}
+		
+		public boolean hasNext() {
+			return i >= 0;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i--];
+		}
+	}
 	
 	private boolean kolejkaPelna() {
 		return w == bufor.length;
@@ -101,5 +124,9 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		}
 		
 		return bufor[w - 1];
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscZmiennaIt();
 	}
 }

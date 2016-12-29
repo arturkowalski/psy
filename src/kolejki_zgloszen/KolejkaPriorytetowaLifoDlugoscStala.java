@@ -1,6 +1,9 @@
 package kolejki_zgloszen;
 
-public class KolejkaPriorytetowaLifoDlugoscStala {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 	private final Zgloszenie[] bufor;
 	
 	private int stan;
