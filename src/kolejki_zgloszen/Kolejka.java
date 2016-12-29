@@ -7,5 +7,9 @@ public interface Kolejka extends Iterable<Zgloszenie> {
 	
 	boolean kolejkaPusta();
 	
+	default boolean kolejkaPelna() {
+		throw new UnsupportedOperationException("Kolejka nie moze byc pelna");
+	}
+	
 	int stan();
 }

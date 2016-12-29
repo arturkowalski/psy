@@ -25,7 +25,11 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		}
 	}
 	
-	private boolean kolejkaPelna() {
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return stan == bufor.length;
 	}
 	
@@ -34,6 +38,7 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
+		// arraycopy
 		for (int i = stan - 1; i >= 0; --i) {
 			tab[i] = bufor[(iu + i) % bufor.length];
 		}
@@ -49,8 +54,6 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		iw = iu = stan = 0;
 	}
 	
 	public KolejkaFifoDlugoscZmienna() {
@@ -67,7 +70,6 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		iw = stan = tablica.length;
-		iu = 0;
 	}
 	
 	public KolejkaFifoDlugoscZmienna(final KolejkaFifoDlugoscZmienna kolejka) {
@@ -77,16 +79,15 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {			
-			bufor[iw] = kolejka.bufor[iw %= bufor.length];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		iw = kolejka.iw;
 		iu = kolejka.iu;
+		stan = kolejka.stan;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		if (kolejkaPelna()) {
+		if (buforPelny()) {
 			zmienDlugosc(2 * bufor.length);
 		}
 		
@@ -134,9 +135,5 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		}
 		
 		return bufor[iu];
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaFifoDlugoscZmiennaIt();
 	}
 }

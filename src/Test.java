@@ -8,7 +8,7 @@ public class Test {
 		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
 		Random priorytety = new Random();
-		KolejkaPriorytetowaFifoDlugoscStala kolejka = new KolejkaPriorytetowaFifoDlugoscStala(10);
+		KolejkaFifoDlugoscStala kolejka = new KolejkaFifoDlugoscStala(10);
 		
 		char q = ' ';
 		

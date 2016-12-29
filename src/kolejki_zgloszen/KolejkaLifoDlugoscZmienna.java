@@ -28,7 +28,11 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		}
 	}
 	
-	private boolean kolejkaPelna() {
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return w == bufor.length;
 	}
 	
@@ -48,8 +52,6 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscZmienna() {
@@ -81,7 +83,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		if (kolejkaPelna()) {
+		if (buforPelny()) {
 			zmienDlugosc(2 * bufor.length);
 		}
 		
@@ -118,9 +120,5 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		}
 		
 		return bufor[w - 1];
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscZmiennaIt();
 	}
 }

@@ -28,14 +28,16 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		}
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscStalaIt();
+	}
+	
 	public KolejkaLifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -86,6 +88,10 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return w == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return w == bufor.length;
+	}
+	
 	public int stan() {
 		return w;
 	}
@@ -98,15 +104,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return bufor[w - 1];
 	}
 	
-	public boolean kolejkaPelna() {
-		return w == bufor.length;
-	}
-	
 	public int dlugosc() {
 		return bufor.length;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscStalaIt();
 	}
 }

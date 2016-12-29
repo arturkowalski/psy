@@ -54,7 +54,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 			}
 			
 			zamien(i, j);
-			
 			i = j;
 		}
 	}
@@ -88,9 +87,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
-		
-		bufor[0] = null;
-		stan = 0;
 	}
 	
 	public KolejkaPriorytetowaLifoDlugoscZmienna() {
@@ -133,7 +129,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 		}
 		
 		bufor[++stan] = zgloszenie;
-		
 		przywrocStruktureOdDolu(stan);
 		
 		assert strukturaDrzewaPoprawna();
@@ -147,7 +142,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 		Zgloszenie z = bufor[1];
 		
 		zamien(1, stan--);
-		
 		przywrocStruktureOdGory(1);
 		
 		bufor[stan + 1] = null;

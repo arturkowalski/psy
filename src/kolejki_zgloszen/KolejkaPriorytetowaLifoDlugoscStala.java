@@ -40,7 +40,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 			}
 			
 			zamien(i, j);
-			
 			i = j;
 		}
 	}
@@ -74,9 +73,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
-		
-		bufor[0] = null;
-		stan = 0;
 	}
 	
 	public KolejkaPriorytetowaLifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -115,7 +111,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 		}
 		
 		bufor[++stan] = zgloszenie;
-		
 		przywrocStruktureOdDolu(stan);
 		
 		assert strukturaDrzewaPoprawna();
@@ -129,7 +124,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 		Zgloszenie z = bufor[1];
 		
 		zamien(1, stan--);
-		
 		przywrocStruktureOdGory(1);
 		
 		bufor[stan + 1] = null;
@@ -143,6 +137,10 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 		return stan == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return stan == bufor.length - 1;
+	}
+	
 	public int stan() {
 		return stan;
 	}
@@ -153,10 +151,6 @@ public abstract class KolejkaPriorytetowaLifoDlugoscStala {
 		}
 		
 		return bufor[1];
-	}
-	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length - 1;
 	}
 	
 	public int dlugosc() {

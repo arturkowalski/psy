@@ -25,14 +25,16 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		}
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscStalaIt();
+	}
+	
 	public KolejkaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 
 		bufor = new Zgloszenie[dlugosc];
-		
-		iw = iu = stan = 0;
 	}
 	
 	public KolejkaFifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -45,7 +47,6 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		iw = stan = tablica.length;
-		iu = 0;
 	}
 	
 	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
@@ -55,12 +56,11 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {
-			bufor[iw] = kolejka.bufor[iw % bufor.length];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		iw = kolejka.iw;
 		iu = kolejka.iu;
+		stan = kolejka.stan;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
@@ -99,6 +99,10 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		return stan == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return stan == bufor.length;
+	}
+	
 	public int stan() {
 		return stan;
 	}
@@ -111,15 +115,7 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		return bufor[iu];
 	}
 	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length;
-	}
-	
 	public int dlugosc() {
 		return bufor.length;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaFifoDlugoscStalaIt();
 	}
 }
