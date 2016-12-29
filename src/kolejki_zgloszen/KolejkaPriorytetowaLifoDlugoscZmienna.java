@@ -3,10 +3,30 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
+public final class KolejkaPriorytetowaLifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int stan;
+	
+	private class KolejkaPriorytetowaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+		private KolejkaPriorytetowaLifoDlugoscZmienna kolejka;
+		
+		private KolejkaPriorytetowaLifoDlugoscZmiennaIt() {
+			kolejka = new KolejkaPriorytetowaLifoDlugoscZmienna(KolejkaPriorytetowaLifoDlugoscZmienna.this);
+		}
+		
+		public boolean hasNext() {
+			return !kolejka.kolejkaPusta();
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()){
+				throw new NoSuchElementException();
+			}
+			
+			return kolejka.usun();
+		}
+	}
 	
 	private boolean kolejkaPelna() {
 		return stan == bufor.length - 1;
@@ -169,6 +189,10 @@ public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 	
 	public int stan() {
 		return stan;
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaLifoDlugoscZmiennaIt();
 	}
 	
 	public int dlugosc() {

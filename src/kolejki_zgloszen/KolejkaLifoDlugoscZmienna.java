@@ -114,6 +114,10 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		return w;
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscZmiennaIt();
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (w == 0) {
 			throw new KolejkaPustaWyj();

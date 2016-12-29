@@ -1,11 +1,35 @@
 package kolejki_zgloszen;
 
-public abstract class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int stan;
 	
 	private boolean buforPelny() {
+	private class KolejkaPriorytetowaFifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+		private KolejkaPriorytetowaFifoDlugoscZmienna kolejka;
+		
+		private KolejkaPriorytetowaFifoDlugoscZmiennaIt() {
+			kolejka = new KolejkaPriorytetowaFifoDlugoscZmienna(KolejkaPriorytetowaFifoDlugoscZmienna.this);
+		}
+		
+		public boolean hasNext() {
+			return !kolejka.kolejkaPusta();
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()){
+				throw new NoSuchElementException();
+			}
+			
+			return kolejka.usun();
+		}
+	}
+	
+	private boolean kolejkaPelna() {
 		return stan == bufor.length - 1;
 	}
 	
@@ -158,6 +182,18 @@ public abstract class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	
 	public int stan() {
 		return stan;
+	}
+	
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[1];
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaFifoDlugoscZmiennaIt();
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
