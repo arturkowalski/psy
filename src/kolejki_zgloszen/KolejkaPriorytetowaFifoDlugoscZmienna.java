@@ -124,15 +124,13 @@ public abstract class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
-		bufor = new Zgloszenie[(stan = kolejka.bufor.length) + 1];
+		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = stan - 1; i >= 0; --i) {
-			bufor[i + 1] = kolejka.bufor[i];
+		for (int i = kolejka.bufor.length - 1; i >= 0; --i) {
+			bufor[i] = kolejka.bufor[i];
 		}
 		
-		for (int k = stan >> 1; k >= 1; --k) {
-			przywrocStruktureOdGory(k);
-		}
+		stan = kolejka.stan;
 		
 		assert strukturaDrzewaPoprawna();
 	}
