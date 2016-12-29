@@ -8,7 +8,6 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	
 	private int stan;
 	
-	private boolean buforPelny() {
 	private class KolejkaPriorytetowaFifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
 		private KolejkaPriorytetowaFifoDlugoscZmienna kolejka;
 		
@@ -29,7 +28,11 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		}
 	}
 	
-	private boolean kolejkaPelna() {
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaFifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return stan == bufor.length - 1;
 	}
 	
@@ -182,18 +185,6 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	
 	public int stan() {
 		return stan;
-	}
-	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[1];
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaFifoDlugoscZmiennaIt();
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {

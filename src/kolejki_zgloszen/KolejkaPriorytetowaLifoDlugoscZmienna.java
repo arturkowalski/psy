@@ -28,7 +28,11 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements Kolejka {
 		}
 	}
 	
-	private boolean kolejkaPelna() {
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaLifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return stan == bufor.length - 1;
 	}
 	
@@ -144,7 +148,7 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements Kolejka {
 	}
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
-		if (kolejkaPelna()) {
+		if (buforPelny()) {
 			zmienDlugosc(2 * bufor.length);
 		}
 		
@@ -175,14 +179,6 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements Kolejka {
 		return z;
 	}
 	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[1];
-	}
-	
 	public boolean kolejkaPusta() {
 		return stan == 0;
 	}
@@ -191,8 +187,12 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements Kolejka {
 		return stan;
 	}
 	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaLifoDlugoscZmiennaIt();
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[1];
 	}
 	
 	public int dlugosc() {

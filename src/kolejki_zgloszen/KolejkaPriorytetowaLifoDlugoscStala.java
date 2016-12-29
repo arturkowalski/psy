@@ -28,6 +28,10 @@ public final class KolejkaPriorytetowaLifoDlugoscStala implements Kolejka {
 		}
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaPriorytetowaLifoDlugoscStalaIt();
+	}
+	
 	private boolean porownanie(int i, int j) {
 		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
 			==  bufor[j].priorytet() && bufor[i].numer() < bufor[j].numer();
@@ -163,10 +167,6 @@ public final class KolejkaPriorytetowaLifoDlugoscStala implements Kolejka {
 	
 	public int stan() {
 		return stan;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaLifoDlugoscStalaIt();
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
