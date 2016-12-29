@@ -3,7 +3,7 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class KolejkaPriorytetowaLifoDlugoscZmienna {
+public abstract class KolejkaPriorytetowaLifoDlugoscZmienna {
 	private Zgloszenie[] bufor;
 	
 	private int stan;

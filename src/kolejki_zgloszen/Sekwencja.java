@@ -5,6 +5,7 @@ public final class Sekwencja {
 	
 	private int nastepny;
 	
+	// Dodac trzeci parametr (wynik dodawania)
 	private boolean add(int a, int b) {
 		long c = (long) a + (long) b;
 		

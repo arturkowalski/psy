@@ -3,7 +3,7 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscZmienna implements Kolejka, Iterable<Zgloszenie> {
+public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int iw, iu;
@@ -11,11 +11,6 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka, Iterable<Zglosz
 	
 	private class KolejkaFifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
 		private int i;
-		
-		// Konstruktor zbedny (?)
-		private KolejkaFifoDlugoscZmiennaIt() {
-			i = 0;
-		}
 		
 		public boolean hasNext() {
 			return i < stan;

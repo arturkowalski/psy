@@ -3,7 +3,7 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaLifoDlugoscZmienna implements Kolejka, Iterable<Zgloszenie> {
+public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int w;
