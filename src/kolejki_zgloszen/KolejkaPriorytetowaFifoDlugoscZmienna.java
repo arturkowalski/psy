@@ -37,7 +37,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	private void zmienDlugosc(int dl) {
-		assert dl > stan;
+		assert dl != bufor.length && dl > stan;
 		
 		Zgloszenie[] tab = new Zgloszenie[dl];
 		

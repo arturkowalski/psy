@@ -39,8 +39,11 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
 		if (dl > bufor.length) {
-			System.arraycopy(bufor, iu, tab, 0, stan -iu);
-			System.arraycopy(bufor, 0, tab, stan - iu, iu);
+			if (iu > 0) {
+				System.arraycopy(bufor, 0, tab, stan - iu, iu);
+			}
+			
+			System.arraycopy(bufor, iu, tab, 0, stan - iu);
 		}
 		else {
 			if (iu + stan <= bufor.length) {
