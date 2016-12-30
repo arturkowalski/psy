@@ -1,22 +1,58 @@
 package kolejki_zgloszen;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int iw, iu;
 	private int stan;
 	
-	private boolean kolejkaPelna() {
+	private class KolejkaFifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		public boolean hasNext() {
+			return i < stan;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i++];
+		}
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return stan == bufor.length;
 	}
 	
 	private void zmienDlugosc(final int dl) {
-		assert dl >= stan;
+		assert dl != bufor.length && dl >= stan;
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
-		for (int i = stan - 1; i >= 0; --i) {
-			tab[i] = bufor[(iu + i) % bufor.length];
+		if (dl > bufor.length) {
+			if (iu > 0) {
+				System.arraycopy(bufor, 0, tab, stan - iu, iu);
+			}
+			
+			System.arraycopy(bufor, iu, tab, 0, stan - iu);
+		}
+		else {
+			if (iu + stan <= bufor.length) {
+				System.arraycopy(bufor, iu, tab, 0, stan);
+			}
+			else {
+				System.arraycopy(bufor, iu, tab, 0, bufor.length - iu);
+				System.arraycopy(bufor, 0, tab, bufor.length - iu, stan - bufor.length + iu);
+			}
 		}
 		
 		iw = stan;
@@ -30,8 +66,6 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		iw = iu = stan = 0;
 	}
 	
 	public KolejkaFifoDlugoscZmienna() {
@@ -45,12 +79,9 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		iw = stan = tablica.length;
-		iu = 0;
 	}
 	
 	public KolejkaFifoDlugoscZmienna(final KolejkaFifoDlugoscZmienna kolejka) {
@@ -60,25 +91,25 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {			
-			bufor[iw] = kolejka.bufor[iw %= bufor.length];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		iw = kolejka.iw;
 		iu = kolejka.iu;
+		stan = kolejka.stan;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		if (kolejkaPelna()) {
-			zmienDlugosc(bufor.length << 1);
+		if (buforPelny()) {
+			zmienDlugosc(2 * bufor.length);
 		}
 		
 		bufor[iw++] = zgloszenie;
-		++stan;
 		
 		if (iw == bufor.length) {
 			iw = 0;
 		}
+		
+		++stan;
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -90,15 +121,15 @@ public final class KolejkaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor[iu++] = null;
 		
-		--stan;
-		
 		if (iu == bufor.length) {
 			iu = 0;
 		}
 		
-		if (stan > 0 && stan == bufor.length >> 2) {
-			zmienDlugosc(bufor.length >> 1);
+		if (stan > 0 && stan == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
 		}
+		
+		--stan;
 		
 		return z;
 	}

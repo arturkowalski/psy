@@ -1,22 +1,47 @@
 package kolejki_zgloszen;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	private Zgloszenie[] bufor;
 	
 	private int w;
 	
-	private boolean kolejkaPelna() {
+	private class KolejkaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		private KolejkaLifoDlugoscZmiennaIt() {
+			i = w - 1;
+		}
+		
+		public boolean hasNext() {
+			return i >= 0;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i--];
+		}
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscZmiennaIt();
+	}
+	
+	private boolean buforPelny() {
 		return w == bufor.length;
 	}
 	
 	private void zmienDlugosc(final int dl) {
-		assert dl >= w;
+		assert dl != bufor.length && dl >= w;
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
-		for (int i = w - 1; i >= 0; --i) {
-			tab[i] = bufor[i];
-		}
+		System.arraycopy(bufor, 0, tab, 0, w);
 		
 		bufor = tab;
 	}
@@ -27,8 +52,6 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscZmienna() {
@@ -42,9 +65,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		w = tablica.length;
 	}
@@ -56,16 +77,14 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = kolejka.bufor[i];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.w);
 		
-		w = kolejka.bufor.length;
+		w = kolejka.w;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
-		if (kolejkaPelna()) {
-			zmienDlugosc(bufor.length << 1);
+		if (buforPelny()) {
+			zmienDlugosc(2 * bufor.length);
 		}
 		
 		bufor[w++] = zgloszenie;
@@ -80,8 +99,8 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor[w] = null;
 		
-		if (w > 0 && w == bufor.length >> 2) {
-			zmienDlugosc(bufor.length >> 1);
+		if (w > 0 && w == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
 		}
 		
 		return z;

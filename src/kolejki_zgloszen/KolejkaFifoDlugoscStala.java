@@ -1,10 +1,33 @@
 package kolejki_zgloszen;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public final class KolejkaFifoDlugoscStala implements Kolejka {
 	private final Zgloszenie[] bufor;
 	
 	private int iw, iu;
 	private int stan;
+	
+	private class KolejkaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		public boolean hasNext() {
+			return i < stan;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i++];
+		}
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscStalaIt();
+	}
 	
 	public KolejkaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
@@ -12,8 +35,6 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		}
 
 		bufor = new Zgloszenie[dlugosc];
-		
-		iw = iu = stan = 0;
 	}
 	
 	public KolejkaFifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -23,12 +44,9 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		iw = stan = tablica.length;
-		iu = 0;
 	}
 	
 	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
@@ -38,12 +56,11 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (stan = 0, iw = kolejka.iu; stan < kolejka.stan; ++stan, ++iw) {
-			bufor[iw] = kolejka.bufor[iw % bufor.length];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		iw = kolejka.iw;
 		iu = kolejka.iu;
+		stan = kolejka.stan;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
@@ -69,17 +86,21 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		
 		bufor[iu++] = null;
 		
-		--stan;
-		
 		if (iu == bufor.length) {
 			iu = 0;
 		}
+		
+		--stan;
 		
 		return z;
 	}
 	
 	public boolean kolejkaPusta() {
 		return stan == 0;
+	}
+	
+	public boolean kolejkaPelna() {
+		return stan == bufor.length;
 	}
 	
 	public int stan() {
@@ -92,10 +113,6 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		}
 		
 		return bufor[iu];
-	}
-	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length;
 	}
 	
 	public int dlugosc() {

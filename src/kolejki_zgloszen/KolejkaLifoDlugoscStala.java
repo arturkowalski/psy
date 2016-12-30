@@ -1,9 +1,36 @@
 package kolejki_zgloszen;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public final class KolejkaLifoDlugoscStala implements Kolejka {
 	private final Zgloszenie[] bufor;
 	
 	private int w;
+	
+	private class KolejkaLifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+		private int i;
+		
+		private KolejkaLifoDlugoscStalaIt() {
+			i = w - 1;
+		}
+		
+		public boolean hasNext() {
+			return i >= 0;
+		}
+		
+		public Zgloszenie next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			
+			return bufor[i--];
+		}
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscStalaIt();
+	}
 	
 	public KolejkaLifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
@@ -11,8 +38,6 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
-		
-		w = 0;
 	}
 	
 	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
@@ -22,9 +47,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[tablica.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = tablica[i];
-		}
+		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
 		
 		w = tablica.length;
 	}
@@ -36,11 +59,9 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		for (int i = bufor.length - 1; i >= 0; --i) {
-			bufor[i] = kolejka.bufor[i];
-		}
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.w);
 		
-		w = kolejka.bufor.length;
+		w = kolejka.w;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
@@ -67,6 +88,10 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return w == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return w == bufor.length;
+	}
+	
 	public int stan() {
 		return w;
 	}
@@ -77,10 +102,6 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		}
 		
 		return bufor[w - 1];
-	}
-	
-	public boolean kolejkaPelna() {
-		return w == bufor.length;
 	}
 	
 	public int dlugosc() {
