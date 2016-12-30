@@ -59,9 +59,9 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.w);
 		
-		w = kolejka.bufor.length;
+		w = kolejka.w;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {

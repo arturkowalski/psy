@@ -37,7 +37,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	private void zmienDlugosc(int dl) {
-		assert dl > stan;
+		assert dl != bufor.length && dl > stan;
 		
 		Zgloszenie[] tab = new Zgloszenie[dl];
 		
@@ -126,7 +126,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		
 		System.arraycopy(tablica, 0, bufor, 1, tablica.length);
 		
-		for (int k = stan >> 1; k >= 1; --k) {
+		for (int k = stan / 2; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
 		}
 		

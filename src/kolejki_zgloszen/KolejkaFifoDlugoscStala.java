@@ -86,11 +86,11 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		
 		bufor[iu++] = null;
 		
-		--stan;
-		
 		if (iu == bufor.length) {
 			iu = 0;
 		}
+		
+		--stan;
 		
 		return z;
 	}

@@ -37,7 +37,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	}
 	
 	private void zmienDlugosc(final int dl) {
-		assert dl >= w;
+		assert dl != bufor.length && dl >= w;
 		
 		Zgloszenie tab[] = new Zgloszenie[dl];
 		
@@ -77,9 +77,9 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.w);
 		
-		w = kolejka.bufor.length;
+		w = kolejka.w;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) {
