@@ -4,8 +4,8 @@ import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
-	private Zgloszenie[] bufor;
+public final class KolejkaPriorytetowaFifoDlugoscZmienna //implements Kolejka {
+{	private Zgloszenie[] bufor;
 	
 	private int stan;
 	

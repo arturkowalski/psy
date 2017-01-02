@@ -1,32 +1,51 @@
 package kolejki;
 
-import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscStala implements Kolejka {
-	private final Zgloszenie[] bufor;
+public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypElementow> {
+	private final int dlugosc;
 	
-	private int iw, iu;
+	private Wezel glowa, ogon;
+	
 	private int stan;
 	
-	private class KolejkaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
-		private int i;
+	private class Wezel {
+		private TypElementow e;
+		private Wezel n;
 		
-		public boolean hasNext() {
-			return i < stan;
-		}
+		private Wezel() {}
 		
-		public Zgloszenie next() {
-			if (!hasNext()) {
-				throw new NoSuchElementException();
-			}
-			
-			return bufor[i++];
+		private Wezel(TypElementow e, Wezel n) {
+			this.e = e;
+			this.n = n;
 		}
 	}
 	
-	public Iterator<Zgloszenie> iterator() {
+	private class KolejkaFifoDlugoscStalaIt implements Iterator<TypElementow> {
+		private Wezel w;
+		
+		private KolejkaFifoDlugoscStalaIt() {
+			w = glowa;
+		}
+		
+		public boolean hasNext() {
+			return w != null;
+		}
+		
+		public TypElementow next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException("Iterator wykorzystany");
+			}
+			
+			TypElementow e = w.e;
+			w = w.n;
+			
+			return e;
+		}
+	}
+	
+	public Iterator<TypElementow> iterator() {
 		return new KolejkaFifoDlugoscStalaIt();
 	}
 	
@@ -34,66 +53,42 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
-
-		bufor = new Zgloszenie[dlugosc];
+		
+		this.dlugosc = dlugosc;
 	}
 	
-	public KolejkaFifoDlugoscStala(final Zgloszenie[] tablica) {
-		if (tablica == null) {
-			throw new IllegalArgumentException("Tablica-parametr rowna null");
-		}
-		
-		bufor = new Zgloszenie[tablica.length];
-		
-		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
-		
-		iw = stan = tablica.length;
-	}
-	
-	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
-		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
-		}
-		
-		bufor = new Zgloszenie[kolejka.bufor.length];
-		
-		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
-		
-		iw = kolejka.iw;
-		iu = kolejka.iu;
-		stan = kolejka.stan;
-	}
-	
-	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+	public void wstaw(final TypElementow element) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
+			throw new KolejkaPelnaWyj(dlugosc);
 		}
 		
-		bufor[iw++] = zgloszenie;
+		Wezel w = new Wezel(element, null);
 		
-		if (iw == bufor.length) {
-			iw = 0;
+		if (kolejkaPusta()) {
+			glowa = w;
+		}
+		else {
+			ogon.n = w;
 		}
 		
+		ogon = w;
 		++stan;
 	}
 	
-	public Zgloszenie usun() throws KolejkaPustaWyj {
+	public TypElementow usun() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
-		Zgloszenie z = bufor[iu];
-		
-		bufor[iu++] = null;
-		
-		if (iu == bufor.length) {
-			iu = 0;
-		}
-		
+		TypElementow e = glowa.e;
+		glowa = glowa.n;
 		--stan;
 		
-		return z;
+		if (kolejkaPusta()) {
+			ogon = null;
+		}
+		
+		return e;
 	}
 	
 	public boolean kolejkaPusta() {
@@ -101,22 +96,40 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 	}
 	
 	public boolean kolejkaPelna() {
-		return stan == bufor.length;
+		return stan == dlugosc;
 	}
 	
 	public int stan() {
 		return stan;
 	}
 	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (iu == iw) {
+	public TypElementow glowa() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
-		return bufor[iu];
+		return glowa.e;
 	}
 	
 	public int dlugosc() {
-		return bufor.length;
+		return dlugosc;
+	}
+	
+	public static void main(String[] args) {
+		KolejkaFifoDlugoscStala<Character> k = new KolejkaFifoDlugoscStala<>(5);
+		
+		k.wstaw('k');
+		k.wstaw('a');
+		k.wstaw('m');
+		k.wstaw('i');
+		k.wstaw('l');
+		
+		for (Character e : k) {
+			System.out.println(e);
+		}
+		
+		while (!k.kolejkaPusta()) {
+			System.out.println(k.usun());
+		}
 	}
 }

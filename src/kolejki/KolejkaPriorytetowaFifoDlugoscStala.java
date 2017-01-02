@@ -4,8 +4,8 @@ import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
-	private final Zgloszenie[] bufor;
+public final class KolejkaPriorytetowaFifoDlugoscStala //implements Kolejka {
+{	private final Zgloszenie[] bufor;
 	
 	private int stan;
 	
@@ -132,7 +132,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length - 1, zgloszenie);
+			throw new KolejkaPelnaWyj(bufor.length - 1);
 		}
 		
 		bufor[++stan] = zgloszenie;
