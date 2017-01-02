@@ -3,7 +3,7 @@ package kolejki;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypElementow> {
+public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejka<TypElementow> {
 	private final int dlugosc;
 	
 	private Wezel glowa, ogon;
@@ -22,10 +22,10 @@ public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypE
 		}
 	}
 	
-	private class KolejkaFifoDlugoscStalaIt implements Iterator<TypElementow> {
+	private class KolejkaFifoDlugoscOgraniczonaIt implements Iterator<TypElementow> {
 		private Wezel w;
 		
-		private KolejkaFifoDlugoscStalaIt() {
+		private KolejkaFifoDlugoscOgraniczonaIt() {
 			w = glowa;
 		}
 		
@@ -46,10 +46,10 @@ public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypE
 	}
 	
 	public Iterator<TypElementow> iterator() {
-		return new KolejkaFifoDlugoscStalaIt();
+		return new KolejkaFifoDlugoscOgraniczonaIt();
 	}
 	
-	public KolejkaFifoDlugoscStala(final int dlugosc) {
+	public KolejkaFifoDlugoscOgraniczona(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -116,7 +116,7 @@ public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypE
 	}
 	
 	public static void main(String[] args) {
-		KolejkaFifoDlugoscStala<Character> k = new KolejkaFifoDlugoscStala<>(5);
+		KolejkaFifoDlugoscOgraniczona<Character> k = new KolejkaFifoDlugoscOgraniczona<>(5);
 		
 		k.wstaw('k');
 		k.wstaw('a');
@@ -127,6 +127,8 @@ public final class KolejkaFifoDlugoscStala<TypElementow> implements Kolejka<TypE
 		for (Character e : k) {
 			System.out.println(e);
 		}
+		
+		System.out.println();
 		
 		while (!k.kolejkaPusta()) {
 			System.out.println(k.usun());
