@@ -1,9 +1,11 @@
 package kolejki;
 
-public interface Kolejka<TypElementow> extends Iterable<TypElementow> {
-	void wstaw(final TypElementow element) throws KolejkaPelnaWyj;
+public interface Kolejka<Element> extends Iterable<Element> {
+	void wstaw(final Element element) throws KolejkaPelnaWyj;
 	
-	TypElementow usun() throws KolejkaPustaWyj;
+	Element nastepny() throws KolejkaPustaWyj;
+	
+	Element usun() throws KolejkaPustaWyj;
 	
 	boolean kolejkaPusta();
 	

@@ -3,8 +3,10 @@ package kolejki;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscNieograniczona<Element> implements Kolejka<Element> {	
-	private Wezel glowa, ogon;
+public final class KolejkaLifoDlugoscOgraniczona<Element> implements Kolejka<Element> {	
+	private final int dlugosc;
+	
+	private Wezel glowa;
 	
 	private int stan;
 	
@@ -20,10 +22,10 @@ public final class KolejkaFifoDlugoscNieograniczona<Element> implements Kolejka<
 		}
 	}
 	
-	private class KolejkaFifoDlugoscNieograniczonaIt implements Iterator<Element> {
+	private class KolejkaLifoDlugoscOgraniczonaIt implements Iterator<Element> {
 		private Wezel w;
 		
-		private KolejkaFifoDlugoscNieograniczonaIt() {
+		private KolejkaLifoDlugoscOgraniczonaIt() {
 			w = glowa;
 		}
 		
@@ -44,22 +46,26 @@ public final class KolejkaFifoDlugoscNieograniczona<Element> implements Kolejka<
 	}
 	
 	public Iterator<Element> iterator() {
-		return new KolejkaFifoDlugoscNieograniczonaIt();
+		return new KolejkaLifoDlugoscOgraniczonaIt();
 	}
 	
-	public KolejkaFifoDlugoscNieograniczona() {}
+	public KolejkaLifoDlugoscOgraniczona(final int dlugosc) {
+		if (dlugosc <= 0) {
+			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
+		}
+		
+		this.dlugosc = dlugosc;
+	}
 	
 	public void wstaw(final Element element) throws KolejkaPelnaWyj {
-		Wezel w = new Wezel(element, null);
-		
-		if (kolejkaPusta()) {
-			glowa = w;
-		}
-		else {
-			ogon.n = w;
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(dlugosc);
 		}
 		
-		ogon = w;
+		Wezel w = glowa;
+		
+		glowa = new Wezel(element, w);
+		
 		++stan;
 	}
 	
@@ -80,10 +86,6 @@ public final class KolejkaFifoDlugoscNieograniczona<Element> implements Kolejka<
 		glowa = glowa.n;
 		--stan;
 		
-		if (kolejkaPusta()) {
-			ogon = null;
-		}
-		
 		return e;
 	}
 	
@@ -91,28 +93,39 @@ public final class KolejkaFifoDlugoscNieograniczona<Element> implements Kolejka<
 		return stan == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return stan == dlugosc;
+	}
+	
 	public int stan() {
 		return stan;
 	}
 	
+	public int dlugosc() {
+		return dlugosc;
+	}
+	
 	public static void main(String[] args) {
-		KolejkaFifoDlugoscNieograniczona<Integer> k = new KolejkaFifoDlugoscNieograniczona<>();
-		char z = ' ';
+		KolejkaLifoDlugoscOgraniczona<Character> k = new KolejkaLifoDlugoscOgraniczona<>(5);
 		
-		for (int i = 0; i < 5; ++i) {
-			k.wstaw(i);
-		}
+		k.wstaw('k');
+		k.wstaw('a');
+		k.wstaw('m');
+		k.wstaw('i');
+		k.wstaw('l');
 		
 		System.out.println("Do usuniecia:");
 		
-		for (Integer i : k) {
-			System.out.println(i);
+		for (Character c : k) {
+			System.out.print(c);
 		}
 		
-		System.out.println("\nElementy usuniete:");
+		System.out.println("\n\nZnaki usuniete:");
 		
 		while (!k.kolejkaPusta()) {
-			System.out.println(k.usun());
+			System.out.print(k.usun());
 		}
+		
+		System.out.println();
 	}
 }

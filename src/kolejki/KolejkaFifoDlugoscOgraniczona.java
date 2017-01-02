@@ -3,7 +3,7 @@ package kolejki;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejka<TypElementow> {
+public final class KolejkaFifoDlugoscOgraniczona<Element> implements Kolejka<Element> {
 	private final int dlugosc;
 	
 	private Wezel glowa, ogon;
@@ -11,18 +11,18 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 	private int stan;
 	
 	private class Wezel {
-		private TypElementow e;
+		private Element e;
 		private Wezel n;
 		
 		private Wezel() {}
 		
-		private Wezel(TypElementow e, Wezel n) {
+		private Wezel(Element e, Wezel n) {
 			this.e = e;
 			this.n = n;
 		}
 	}
 	
-	private class KolejkaFifoDlugoscOgraniczonaIt implements Iterator<TypElementow> {
+	private class KolejkaFifoDlugoscOgraniczonaIt implements Iterator<Element> {
 		private Wezel w;
 		
 		private KolejkaFifoDlugoscOgraniczonaIt() {
@@ -33,19 +33,19 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 			return w != null;
 		}
 		
-		public TypElementow next() {
+		public Element next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException("Iterator wykorzystany");
 			}
 			
-			TypElementow e = w.e;
+			Element e = w.e;
 			w = w.n;
 			
 			return e;
 		}
 	}
 	
-	public Iterator<TypElementow> iterator() {
+	public Iterator<Element> iterator() {
 		return new KolejkaFifoDlugoscOgraniczonaIt();
 	}
 	
@@ -57,7 +57,7 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 		this.dlugosc = dlugosc;
 	}
 	
-	public void wstaw(final TypElementow element) throws KolejkaPelnaWyj {
+	public void wstaw(final Element element) throws KolejkaPelnaWyj {
 		if (kolejkaPelna()) {
 			throw new KolejkaPelnaWyj(dlugosc);
 		}
@@ -75,12 +75,20 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 		++stan;
 	}
 	
-	public TypElementow usun() throws KolejkaPustaWyj {
+	public Element nastepny() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
-		TypElementow e = glowa.e;
+		return glowa.e;
+	}
+	
+	public Element usun() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		Element e = glowa.e;
 		glowa = glowa.n;
 		--stan;
 		
@@ -103,14 +111,6 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 		return stan;
 	}
 	
-	public TypElementow glowa() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return glowa.e;
-	}
-	
 	public int dlugosc() {
 		return dlugosc;
 	}
@@ -124,14 +124,18 @@ public final class KolejkaFifoDlugoscOgraniczona<TypElementow> implements Kolejk
 		k.wstaw('i');
 		k.wstaw('l');
 		
-		for (Character e : k) {
-			System.out.println(e);
+		System.out.println("Do usuniecia:");
+		
+		for (Character c : k) {
+			System.out.print(c);
+		}
+		
+		System.out.println("\n\nElementy usuniete:");
+		
+		while (!k.kolejkaPusta()) {
+			System.out.print(k.usun());
 		}
 		
 		System.out.println();
-		
-		while (!k.kolejkaPusta()) {
-			System.out.println(k.usun());
-		}
 	}
 }
