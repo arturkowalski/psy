@@ -12,13 +12,15 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 	private class KolejkaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
 		private int i;
 		
+		private KolejkaFifoDlugoscStalaIt() {}
+		
 		public boolean hasNext() {
 			return i < stan;
 		}
 		
 		public Zgloszenie next() {
 			if (!hasNext()) {
-				throw new NoSuchElementException();
+				throw new NoSuchElementException("Iterator wykorzystany");
 			}
 			
 			return bufor[i++];

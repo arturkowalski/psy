@@ -21,7 +21,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		
 		public Zgloszenie next() {
 			if (!hasNext()) {
-				throw new NoSuchElementException();
+				throw new NoSuchElementException("Iterator wykorzystany");
 			}
 			
 			return bufor[i--];
