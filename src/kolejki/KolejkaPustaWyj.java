@@ -1,4 +1,4 @@
-package kolejki_zgloszen;
+package kolejki;
 
 public final class KolejkaPustaWyj extends RuntimeException {
 	public String toString() {

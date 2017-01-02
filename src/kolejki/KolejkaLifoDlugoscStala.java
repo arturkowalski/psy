@@ -1,17 +1,18 @@
-package kolejki_zgloszen;
+package kolejki;
 
+import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaLifoDlugoscZmienna implements Kolejka {
-	private Zgloszenie[] bufor;
+public final class KolejkaLifoDlugoscStala implements Kolejka {
+	private final Zgloszenie[] bufor;
 	
 	private int w;
 	
-	private class KolejkaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+	private class KolejkaLifoDlugoscStalaIt implements Iterator<Zgloszenie> {
 		private int i;
 		
-		private KolejkaLifoDlugoscZmiennaIt() {
+		private KolejkaLifoDlugoscStalaIt() {
 			i = w - 1;
 		}
 		
@@ -29,24 +30,10 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscZmiennaIt();
+		return new KolejkaLifoDlugoscStalaIt();
 	}
 	
-	private boolean buforPelny() {
-		return w == bufor.length;
-	}
-	
-	private void zmienDlugosc(final int dl) {
-		assert dl != bufor.length && dl >= w;
-		
-		Zgloszenie tab[] = new Zgloszenie[dl];
-		
-		System.arraycopy(bufor, 0, tab, 0, w);
-		
-		bufor = tab;
-	}
-	
-	public KolejkaLifoDlugoscZmienna(final int dlugosc) {
+	public KolejkaLifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -54,11 +41,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		bufor = new Zgloszenie[dlugosc];
 	}
 	
-	public KolejkaLifoDlugoscZmienna() {
-		this(30);
-	}
-	
-	public KolejkaLifoDlugoscZmienna(final Zgloszenie[] tablica) {
+	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -70,7 +53,7 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		w = tablica.length;
 	}
 	
-	public KolejkaLifoDlugoscZmienna(final KolejkaLifoDlugoscZmienna kolejka) {
+	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
@@ -82,26 +65,22 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		w = kolejka.w;
 	}
 	
-	public void wstaw(final Zgloszenie zgloszenie) {
-		if (buforPelny()) {
-			zmienDlugosc(2 * bufor.length);
+	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
 		}
 		
 		bufor[w++] = zgloszenie;
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
-		if (w == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
 		Zgloszenie z = bufor[--w];
 		
 		bufor[w] = null;
-		
-		if (w > 0 && w == bufor.length / 4) {
-			zmienDlugosc(bufor.length / 2);
-		}
 		
 		return z;
 	}
@@ -110,15 +89,23 @@ public final class KolejkaLifoDlugoscZmienna implements Kolejka {
 		return w == 0;
 	}
 	
+	public boolean kolejkaPelna() {
+		return w == bufor.length;
+	}
+	
 	public int stan() {
 		return w;
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (w == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
 		return bufor[w - 1];
+	}
+	
+	public int dlugosc() {
+		return bufor.length;
 	}
 }

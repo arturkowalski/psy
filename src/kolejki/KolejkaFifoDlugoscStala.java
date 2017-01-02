@@ -1,5 +1,6 @@
-package kolejki_zgloszen;
+package kolejki;
 
+import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

@@ -1,4 +1,4 @@
-package kolejki_zgloszen;
+package zgloszenia;
 
 public final class Zgloszenie {
 	private final int numer;

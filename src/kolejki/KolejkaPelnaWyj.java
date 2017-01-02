@@ -1,4 +1,6 @@
-package kolejki_zgloszen;
+package kolejki;
+
+import zgloszenia.Zgloszenie;
 
 public final class KolejkaPelnaWyj extends RuntimeException {
 	private final int dlugosc;

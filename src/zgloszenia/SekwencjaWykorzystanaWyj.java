@@ -1,4 +1,4 @@
-package kolejki_zgloszen;
+package zgloszenia;
 
 public final class SekwencjaWykorzystanaWyj extends RuntimeException {
 	public String toString() {

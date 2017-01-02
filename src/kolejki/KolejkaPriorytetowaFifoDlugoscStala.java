@@ -1,18 +1,19 @@
-package kolejki_zgloszen;
+package kolejki;
 
+import zgloszenia.Zgloszenie;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
-	private Zgloszenie[] bufor;
+public final class KolejkaPriorytetowaFifoDlugoscStala implements Kolejka {
+	private final Zgloszenie[] bufor;
 	
 	private int stan;
 	
-	private class KolejkaPriorytetowaFifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
-		private KolejkaPriorytetowaFifoDlugoscZmienna kolejka;
+	private class KolejkaPriorytetowaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+		private KolejkaPriorytetowaFifoDlugoscStala kolejka;
 		
-		private KolejkaPriorytetowaFifoDlugoscZmiennaIt() {
-			kolejka = new KolejkaPriorytetowaFifoDlugoscZmienna(KolejkaPriorytetowaFifoDlugoscZmienna.this);
+		private KolejkaPriorytetowaFifoDlugoscStalaIt() {
+			kolejka = new KolejkaPriorytetowaFifoDlugoscStala(KolejkaPriorytetowaFifoDlugoscStala.this);
 		}
 		
 		public boolean hasNext() {
@@ -29,26 +30,12 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaFifoDlugoscZmiennaIt();
-	}
-	
-	private boolean buforPelny() {
-		return stan == bufor.length - 1;
-	}
-	
-	private void zmienDlugosc(int dl) {
-		assert dl != bufor.length && dl > stan;
-		
-		Zgloszenie[] tab = new Zgloszenie[dl];
-		
-		System.arraycopy(bufor, 1, tab, 1, stan);
-		
-		bufor = tab;
+		return new KolejkaPriorytetowaFifoDlugoscStalaIt();
 	}
 	
 	private boolean porownanie(int i, int j) {
 		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
-			== bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
+			==  bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
 	}
 	
 	private void zamien(int i, int j) {
@@ -105,7 +92,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscZmienna(final int dlugosc) {
+	public KolejkaPriorytetowaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -113,11 +100,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		bufor = new Zgloszenie[dlugosc + 1];
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscZmienna() {
-		this(30);
-	}
-	
-	public KolejkaPriorytetowaFifoDlugoscZmienna(final Zgloszenie[] tablica) {
+	public KolejkaPriorytetowaFifoDlugoscStala(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -133,14 +116,14 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		assert strukturaDrzewaPoprawna();
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscZmienna(final KolejkaPriorytetowaFifoDlugoscZmienna kolejka) {
+	public KolejkaPriorytetowaFifoDlugoscStala(final KolejkaPriorytetowaFifoDlugoscStala kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
 		
-		System.arraycopy(kolejka.bufor, 1, bufor, 1, kolejka.stan);
+		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
 		
 		stan = kolejka.stan;
 		
@@ -148,8 +131,8 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
-		if (buforPelny()) {
-			zmienDlugosc(2 * bufor.length);
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(bufor.length - 1, zgloszenie);
 		}
 		
 		bufor[++stan] = zgloszenie;
@@ -170,10 +153,6 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		
 		bufor[stan + 1] = null;
 		
-		if ((stan > 0) && (stan == (bufor.length - 1) / 4)) {
-			zmienDlugosc(bufor.length / 2);
-		}
-		
 		assert strukturaDrzewaPoprawna();
 		
 		return z;
@@ -181,6 +160,10 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	
 	public boolean kolejkaPusta() {
 		return stan == 0;
+	}
+	
+	public boolean kolejkaPelna() {
+		return stan == bufor.length - 1;
 	}
 	
 	public int stan() {
