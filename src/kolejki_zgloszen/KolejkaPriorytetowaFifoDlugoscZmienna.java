@@ -3,7 +3,7 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
+public final class KolejkaPriorytetowaFifoDlugoscZmienna implements KolejkaI {
 	private Zgloszenie[] bufor;
 	
 	private int stan;
@@ -37,7 +37,7 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 	}
 	
 	private void zmienDlugosc(int dl) {
-		assert dl != bufor.length && dl > stan;
+		//assert dl != bufor.length && dl > stan;
 		
 		Zgloszenie[] tab = new Zgloszenie[dl];
 		
@@ -130,12 +130,12 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 			przywrocStruktureOdGory(k);
 		}
 		
-		assert strukturaDrzewaPoprawna();
+		//assert strukturaDrzewaPoprawna();
 	}
 	
 	public KolejkaPriorytetowaFifoDlugoscZmienna(final KolejkaPriorytetowaFifoDlugoscZmienna kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -144,7 +144,19 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		
 		stan = kolejka.stan;
 		
-		assert strukturaDrzewaPoprawna();
+		//assert strukturaDrzewaPoprawna();
+	}
+	
+	public int dlugosc() {
+		return bufor.length;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public int stan() {
+		return stan;
 	}
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
@@ -155,7 +167,15 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 		bufor[++stan] = zgloszenie;
 		przywrocStruktureOdDolu(stan);
 		
-		assert strukturaDrzewaPoprawna();
+		//assert strukturaDrzewaPoprawna();
+	}
+	
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[1];
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -174,28 +194,8 @@ public final class KolejkaPriorytetowaFifoDlugoscZmienna implements Kolejka {
 			zmienDlugosc(bufor.length / 2);
 		}
 		
-		assert strukturaDrzewaPoprawna();
+		//assert strukturaDrzewaPoprawna();
 		
 		return z;
-	}
-	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
-	public int stan() {
-		return stan;
-	}
-	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[1];
-	}
-	
-	public int dlugosc() {
-		return bufor.length;
 	}
 }

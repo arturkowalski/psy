@@ -3,7 +3,7 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaLifoDlugoscStala implements Kolejka {
+public final class KolejkaLifoDlugoscStala implements KolejkaI {
 	private final Zgloszenie[] bufor;
 	
 	private int w;
@@ -54,7 +54,7 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 	
 	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -64,24 +64,8 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		w = kolejka.w;
 	}
 	
-	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
-		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
-		}
-		
-		bufor[w++] = zgloszenie;
-	}
-	
-	public Zgloszenie usun() throws KolejkaPustaWyj {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		Zgloszenie z = bufor[--w];
-		
-		bufor[w] = null;
-		
-		return z;
+	public int dlugosc() {
+		return bufor.length;
 	}
 	
 	public boolean kolejkaPusta() {
@@ -96,6 +80,14 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return w;
 	}
 	
+	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
+		}
+		
+		bufor[w++] = zgloszenie;
+	}
+	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
 		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
@@ -104,7 +96,15 @@ public final class KolejkaLifoDlugoscStala implements Kolejka {
 		return bufor[w - 1];
 	}
 	
-	public int dlugosc() {
-		return bufor.length;
+	public Zgloszenie usun() throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		Zgloszenie z = bufor[--w];
+		
+		bufor[w] = null;
+		
+		return z;
 	}
 }

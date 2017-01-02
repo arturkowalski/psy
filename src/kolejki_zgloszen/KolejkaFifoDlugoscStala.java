@@ -3,8 +3,8 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaFifoDlugoscStala implements Kolejka {
-	private final Zgloszenie[] bufor;
+public final class KolejkaFifoDlugoscStala implements KolejkaI {
+	private  Zgloszenie[] bufor;
 	
 	private int iw, iu;
 	private int stan;
@@ -53,7 +53,7 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 	
 	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -63,6 +63,22 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		iw = kolejka.iw;
 		iu = kolejka.iu;
 		stan = kolejka.stan;
+	}
+	
+	public int dlugosc() {
+		return bufor.length;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
+	}
+	
+	public boolean kolejkaPelna() {
+		return stan == bufor.length;
+	}
+	
+	public int stan() {
+		return stan;
 	}
 	
 	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
@@ -77,6 +93,14 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		}
 		
 		++stan;
+	}
+	
+	public Zgloszenie nastepne() throws KolejkaPustaWyj {
+		if (iu == iw) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		return bufor[iu];
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
@@ -95,29 +119,5 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 		--stan;
 		
 		return z;
-	}
-	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length;
-	}
-	
-	public int stan() {
-		return stan;
-	}
-	
-	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (iu == iw) {
-			throw new KolejkaPustaWyj();
-		}
-		
-		return bufor[iu];
-	}
-	
-	public int dlugosc() {
-		return bufor.length;
 	}
 }
