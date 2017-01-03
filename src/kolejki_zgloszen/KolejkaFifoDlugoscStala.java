@@ -53,7 +53,7 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 	
 	public KolejkaFifoDlugoscStala(final KolejkaFifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -69,12 +69,12 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 		return bufor.length;
 	}
 	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return stan == bufor.length;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
 	}
 	
 	public int stan() {
@@ -119,5 +119,21 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 		--stan;
 		
 		return z;
+	}
+	
+	public Zgloszenie usunWybrane(int numer) throws KolejkaPustaWyj {
+		int i = bufor.length - 1;
+		
+		for ( ; i >= 0; --i) {
+			if (bufor[i].numer() == numer) {
+				Zgloszenie z = bufor[i];
+				
+				System.arraycopy(bufor, i + 1, bufor, i, bufor.length - 1 - i);
+				
+				bufor[i] = null;
+			}
+		}
+		
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + numer);
 	}
 }

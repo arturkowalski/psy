@@ -117,7 +117,7 @@ public final class KolejkaPriorytetowaLifoDlugoscStala implements KolejkaI {
 	
 	public KolejkaPriorytetowaLifoDlugoscStala(final KolejkaPriorytetowaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -133,12 +133,12 @@ public final class KolejkaPriorytetowaLifoDlugoscStala implements KolejkaI {
 		return bufor.length;
 	}
 	
-	public boolean kolejkaPusta() {
-		return stan == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return stan == bufor.length - 1;
+	}
+	
+	public boolean kolejkaPusta() {
+		return stan == 0;
 	}
 	
 	public int stan() {

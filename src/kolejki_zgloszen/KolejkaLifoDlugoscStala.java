@@ -54,7 +54,7 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 	
 	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -68,12 +68,12 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		return bufor.length;
 	}
 	
-	public boolean kolejkaPusta() {
-		return w == 0;
-	}
-	
 	public boolean kolejkaPelna() {
 		return w == bufor.length;
+	}
+	
+	public boolean kolejkaPusta() {
+		return w == 0;
 	}
 	
 	public int stan() {

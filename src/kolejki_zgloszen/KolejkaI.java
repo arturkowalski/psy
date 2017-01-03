@@ -5,11 +5,11 @@ public interface KolejkaI extends Iterable<Zgloszenie> {
 		throw new UnsupportedOperationException("Dlugosc bufora niedostepna");
 	}
 	
-	boolean kolejkaPusta();
-	
 	default boolean kolejkaPelna() {
-		throw new UnsupportedOperationException("KolejkaI nie moze byc pelna");
+		throw new UnsupportedOperationException("Kolejka nie moze byc pelna");
 	}
+	
+	boolean kolejkaPusta();
 	
 	int stan();
 	

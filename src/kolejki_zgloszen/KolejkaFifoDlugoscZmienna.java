@@ -88,7 +88,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaI {
 	
 	public KolejkaFifoDlugoscZmienna(final KolejkaFifoDlugoscZmienna kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("KolejkaI-parametr rowna null");
+			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];

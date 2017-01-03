@@ -135,7 +135,7 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
 	
 	public KolejkaPriorytetowaLifoDlugoscZmienna(final KolejkaPriorytetowaLifoDlugoscZmienna kolejka) {
 		if (kolejka.bufor == null) {
-			throw new IllegalArgumentException("KolejkaI-parametr null");
+			throw new IllegalArgumentException("Kolejka-parametr null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
