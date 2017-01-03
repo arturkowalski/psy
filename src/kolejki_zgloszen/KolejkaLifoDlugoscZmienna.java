@@ -28,10 +28,6 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		}
 	}
 	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscZmiennaIt();
-	}
-	
 	private boolean buforPelny() {
 		return w == bufor.length;
 	}
@@ -44,6 +40,20 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		System.arraycopy(bufor, 0, tab, 0, w);
 		
 		bufor = tab;
+	}
+	
+	private int indeksZgloszenia(int id) {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		for (int i = 0; i < w; ++i) {
+			if (bufor[i].numer() == id) {
+				return i;
+			}
+		}
+		
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + id);
 	}
 	
 	public KolejkaLifoDlugoscZmienna(final int dlugosc) {
@@ -120,5 +130,65 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		}
 		
 		return z;
+	}
+	
+	public void usunWybrane(int numer) throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		int i = indeksZgloszenia(numer);
+		int t = w - i - 1;
+		
+		if (t > 0) {
+			System.arraycopy(bufor, i + 1, bufor, i, t);
+		}
+		
+		bufor[--w] = null;
+		
+		if (w > 0 && w == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
+		}
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscZmiennaIt();
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Zegar zegar = new Zegar();
+		java.util.Random generator = new java.util.Random();
+		
+		KolejkaLifoDlugoscZmienna kolejka = new KolejkaLifoDlugoscZmienna(3);
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("Zawartosc wyjsciowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.usunWybrane(3);
+		
+		System.out.println("\nTrzecie zgloszenie usuniete:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("\nZgloszenia usuniete:");
+		
+		while (!kolejka.kolejkaPusta()) {
+			System.out.println(kolejka.usun().toString());
+		}
 	}
 }

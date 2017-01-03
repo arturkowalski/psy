@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public final class KolejkaFifoDlugoscStala implements KolejkaI {
-	private  Zgloszenie[] bufor;
+	private Zgloszenie[] bufor;
 	
 	private int iw, iu;
 	private int stan;
@@ -27,15 +27,11 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 		}
 	}
 	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaFifoDlugoscStalaIt();
-	}
-	
 	public KolejkaFifoDlugoscStala(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
-
+		
 		bufor = new Zgloszenie[dlugosc];
 	}
 	
@@ -121,19 +117,8 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 		return z;
 	}
 	
-	public Zgloszenie usunWybrane(int numer) throws KolejkaPustaWyj {
-		int i = bufor.length - 1;
-		
-		for ( ; i >= 0; --i) {
-			if (bufor[i].numer() == numer) {
-				Zgloszenie z = bufor[i];
-				
-				System.arraycopy(bufor, i + 1, bufor, i, bufor.length - 1 - i);
-				
-				bufor[i] = null;
-			}
-		}
-		
-		throw new NoSuchElementException("Nie ma zgloszenia numer " + numer);
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoDlugoscStalaIt();
 	}
+	
 }

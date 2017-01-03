@@ -1,6 +1,7 @@
 package kolejki_zgloszen;
 
-public interface KolejkaI extends Iterable<Zgloszenie> {
+public interface 
+KolejkaI extends Iterable<Zgloszenie> {
 	default int dlugosc() {
 		throw new UnsupportedOperationException("Dlugosc bufora niedostepna");
 	}
@@ -19,5 +20,5 @@ public interface KolejkaI extends Iterable<Zgloszenie> {
 	
 	Zgloszenie usun() throws KolejkaPustaWyj;
 	
-	//Zgloszenie usunWybrane(int numer) throws NoSuchElementException;
+	//void usunWybrane(int numer) throws NoSuchElementException;
 }

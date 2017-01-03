@@ -28,8 +28,18 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		}
 	}
 	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscStalaIt();
+	private int indeksZgloszenia(int id) {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		for (int i = 0; i < w; ++i) {
+			if (bufor[i].numer() == id) {
+				return i;
+			}
+		}
+		
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + id);
 	}
 	
 	public KolejkaLifoDlugoscStala(final int dlugosc) {
@@ -106,5 +116,65 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		bufor[w] = null;
 		
 		return z;
+	}
+	
+	public void usunWybrane(int numer) throws KolejkaPustaWyj {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		int i = indeksZgloszenia(numer);
+		int t = w - i - 1;
+		
+		if (t > 0) {
+			System.arraycopy(bufor, i + 1, bufor, i, t);
+		}
+		
+		bufor[--w] = null;
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaLifoDlugoscStalaIt();
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Zegar zegar = new Zegar();
+		java.util.Random generator = new java.util.Random();
+		
+		KolejkaLifoDlugoscStala kolejka = new KolejkaLifoDlugoscStala(10);
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("Zawartosc wyjsciowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.usunWybrane(3);
+		
+		System.out.println("\nTrzecie zgloszenie usuniete:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("\nKolejka pelna:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
 	}
 }
