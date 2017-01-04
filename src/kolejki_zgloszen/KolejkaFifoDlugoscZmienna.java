@@ -62,6 +62,16 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaI {
 		bufor = tab;
 	}
 	
+	private int indeks(int nr) {
+		for (int i = iu, j = 0; j < stan; i = (i + 1) % bufor.length, ++j) {
+			if (bufor[i].numer() == nr) {
+				return i;
+			}
+		}
+		
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
+	}
+	
 	public KolejkaFifoDlugoscZmienna(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");

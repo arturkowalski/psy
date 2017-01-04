@@ -42,7 +42,7 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		bufor = tab;
 	}
 	
-	private int indeksZgloszenia(int nr) {
+	private int indeks(int nr) {
 		for (int i = 0; i < w; ++i) {
 			if (bufor[i].numer() == nr) {
 				return i;
@@ -133,7 +133,7 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 			throw new KolejkaPustaWyj();
 		}
 		
-		int i = indeksZgloszenia(numer);
+		int i = indeks(numer);
 		int t = w - i - 1;
 		
 		if (t > 0) {
