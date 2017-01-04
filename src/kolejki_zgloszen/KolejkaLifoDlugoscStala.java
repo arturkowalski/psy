@@ -28,18 +28,14 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		}
 	}
 	
-	private int indeksZgloszenia(int id) {
-		if (kolejkaPusta()) {
-			throw new KolejkaPustaWyj();
-		}
-		
+	private int indeksZgloszenia(int nr) {
 		for (int i = 0; i < w; ++i) {
-			if (bufor[i].numer() == id) {
+			if (bufor[i].numer() == nr) {
 				return i;
 			}
 		}
 		
-		throw new NoSuchElementException("Nie ma zgloszenia numer " + id);
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
 	}
 	
 	public KolejkaLifoDlugoscStala(final int dlugosc) {
@@ -141,7 +137,6 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
 		java.util.Random generator = new java.util.Random();
-		
 		KolejkaLifoDlugoscStala kolejka = new KolejkaLifoDlugoscStala(10);
 		
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));

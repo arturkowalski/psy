@@ -23,7 +23,7 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaI {
 				throw new NoSuchElementException("Iterator wykorzystany");
 			}
 			
-			return bufor[i++];
+			return bufor[(iu + i++) % bufor.length];
 		}
 	}
 	

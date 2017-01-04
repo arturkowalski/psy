@@ -2,6 +2,7 @@ package kolejki_zgloszen;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public final class KolejkaFifoDlugoscStala implements KolejkaI {
 	private Zgloszenie[] bufor;
@@ -23,8 +24,18 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 				throw new NoSuchElementException("Iterator wykorzystany");
 			}
 			
-			return bufor[i++];
+			return bufor[(iu + i++) % bufor.length];
 		}
+	}
+	
+	private int indeksZgloszenia(int nr) {
+		for (int i = iu, j = 0; j < stan; i = (i + 1) % bufor.length, ++j) {
+			if (bufor[i].numer() == nr) {
+				return i;
+			}
+		}
+		
+		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
 	}
 	
 	public KolejkaFifoDlugoscStala(final int dlugosc) {
@@ -117,8 +128,40 @@ public final class KolejkaFifoDlugoscStala implements KolejkaI {
 		return z;
 	}
 	
+	public void usunWybrane(int numer) {
+		
+	}
+	
 	public Iterator<Zgloszenie> iterator() {
 		return new KolejkaFifoDlugoscStalaIt();
 	}
 	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Zegar zegar = new Zegar();
+		java.util.Random generator = new Random();
+		KolejkaFifoDlugoscStala kolejka = new KolejkaFifoDlugoscStala(5);
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("Zawartosc wejsciowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.usun();
+		kolejka.usun();
+		kolejka.usun();
+		
+		System.out.println("\nZawartosc wyjsciowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+	}
 }
