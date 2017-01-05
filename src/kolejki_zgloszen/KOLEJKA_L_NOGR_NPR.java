@@ -3,15 +3,15 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
+public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 	private Zgloszenie[] bufor;
 	
 	private int w;
 	
-	private class KolejkaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
+	private class KOLEJKA_L_NOGR_NPR_IT implements Iterator<Zgloszenie> {
 		private int i;
 		
-		private KolejkaLifoDlugoscZmiennaIt() {
+		private KOLEJKA_L_NOGR_NPR_IT() {
 			i = w - 1;
 		}
 		
@@ -52,7 +52,7 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
 	}
 	
-	public KolejkaLifoDlugoscZmienna(final int dlugosc) {
+	public KOLEJKA_L_NOGR_NPR(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -60,11 +60,11 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		bufor = new Zgloszenie[dlugosc];
 	}
 	
-	public KolejkaLifoDlugoscZmienna() {
+	public KOLEJKA_L_NOGR_NPR() {
 		this(30);
 	}
 	
-	public KolejkaLifoDlugoscZmienna(final Zgloszenie[] tablica) {
+	public KOLEJKA_L_NOGR_NPR(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -76,7 +76,7 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		w = tablica.length;
 	}
 	
-	public KolejkaLifoDlugoscZmienna(final KolejkaLifoDlugoscZmienna kolejka) {
+	public KOLEJKA_L_NOGR_NPR(final KOLEJKA_L_NOGR_NPR kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
@@ -148,15 +148,19 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscZmiennaIt();
+		return new KOLEJKA_L_NOGR_NPR_IT();
 	}
 	
 	public static void main(String[] args) {
 		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
 		java.util.Random generator = new java.util.Random();
-		KolejkaLifoDlugoscZmienna kolejka = new KolejkaLifoDlugoscZmienna(3);
+		KOLEJKA_L_NOGR_NPR kolejka = new KOLEJKA_L_NOGR_NPR(3);
 		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
@@ -174,11 +178,6 @@ public final class KolejkaLifoDlugoscZmienna implements KolejkaI {
 		for (Zgloszenie z : kolejka) {
 			System.out.println(z.toString());
 		}
-		
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
 		
 		System.out.println("\nZgloszenia usuniete:");
 		

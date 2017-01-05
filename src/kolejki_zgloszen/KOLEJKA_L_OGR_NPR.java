@@ -3,15 +3,15 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaLifoDlugoscStala implements KolejkaI {
+public final class KOLEJKA_L_OGR_NPR implements KOLEJKA_I {
 	private final Zgloszenie[] bufor;
 	
 	private int w;
 	
-	private class KolejkaLifoDlugoscStalaIt implements Iterator<Zgloszenie> {
+	private class KOLEJKA_L_OGR_NPR_IT implements Iterator<Zgloszenie> {
 		private int i;
 		
-		private KolejkaLifoDlugoscStalaIt() {
+		private KOLEJKA_L_OGR_NPR_IT() {
 			i = w - 1;
 		}
 		
@@ -38,7 +38,7 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
 	}
 	
-	public KolejkaLifoDlugoscStala(final int dlugosc) {
+	public KOLEJKA_L_OGR_NPR(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -46,7 +46,7 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		bufor = new Zgloszenie[dlugosc];
 	}
 	
-	public KolejkaLifoDlugoscStala(final Zgloszenie[] tablica) {
+	public KOLEJKA_L_OGR_NPR(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -58,7 +58,7 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 		w = tablica.length;
 	}
 	
-	public KolejkaLifoDlugoscStala(final KolejkaLifoDlugoscStala kolejka) {
+	public KOLEJKA_L_OGR_NPR(final KOLEJKA_L_OGR_NPR kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
@@ -130,14 +130,14 @@ public final class KolejkaLifoDlugoscStala implements KolejkaI {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaLifoDlugoscStalaIt();
+		return new KOLEJKA_L_OGR_NPR_IT();
 	}
 	
 	public static void main(String[] args) {
 		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
 		java.util.Random generator = new java.util.Random();
-		KolejkaLifoDlugoscStala kolejka = new KolejkaLifoDlugoscStala(10);
+		KOLEJKA_L_OGR_NPR kolejka = new KOLEJKA_L_OGR_NPR(10);
 		
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));

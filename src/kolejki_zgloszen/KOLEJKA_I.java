@@ -1,6 +1,6 @@
 package kolejki_zgloszen;
 
-public interface KolejkaI extends Iterable<Zgloszenie> {
+public interface KOLEJKA_I extends Iterable<Zgloszenie> {
 	default int dlugosc() {
 		throw new UnsupportedOperationException("Dlugosc bufora niedostepna");
 	}

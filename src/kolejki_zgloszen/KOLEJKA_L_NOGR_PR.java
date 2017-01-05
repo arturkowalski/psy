@@ -3,16 +3,16 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
+public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 	private Zgloszenie[] bufor;
 	
 	private int stan;
 	
-	private class KolejkaPriorytetowaLifoDlugoscZmiennaIt implements Iterator<Zgloszenie> {
-		private KolejkaPriorytetowaLifoDlugoscZmienna kolejka;
+	private class KOLEJKA_L_NOGR_PR_IT implements Iterator<Zgloszenie> {
+		private KOLEJKA_L_NOGR_PR kolejka;
 		
-		private KolejkaPriorytetowaLifoDlugoscZmiennaIt() {
-			kolejka = new KolejkaPriorytetowaLifoDlugoscZmienna(KolejkaPriorytetowaLifoDlugoscZmienna.this);
+		private KOLEJKA_L_NOGR_PR_IT() {
+			kolejka = new KOLEJKA_L_NOGR_PR(KOLEJKA_L_NOGR_PR.this);
 		}
 		
 		public boolean hasNext() {
@@ -29,7 +29,7 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaLifoDlugoscZmiennaIt();
+		return new KOLEJKA_L_NOGR_PR_IT();
 	}
 	
 	private boolean buforPelny() {
@@ -105,7 +105,7 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KolejkaPriorytetowaLifoDlugoscZmienna(final int dlugosc) {
+	public KOLEJKA_L_NOGR_PR(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -113,11 +113,11 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
 		bufor = new Zgloszenie[dlugosc + 1];
 	}
 	
-	public KolejkaPriorytetowaLifoDlugoscZmienna() {
+	public KOLEJKA_L_NOGR_PR() {
 		this(30);
 	}
 	
-	public KolejkaPriorytetowaLifoDlugoscZmienna(final Zgloszenie[] tablica) {
+	public KOLEJKA_L_NOGR_PR(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -133,7 +133,7 @@ public final class KolejkaPriorytetowaLifoDlugoscZmienna implements KolejkaI {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public KolejkaPriorytetowaLifoDlugoscZmienna(final KolejkaPriorytetowaLifoDlugoscZmienna kolejka) {
+	public KOLEJKA_L_NOGR_PR(final KOLEJKA_L_NOGR_PR kolejka) {
 		if (kolejka.bufor == null) {
 			throw new IllegalArgumentException("Kolejka-parametr null");
 		}

@@ -1,14 +1,14 @@
 import kolejki_zgloszen.Zgloszenie;
 import kolejki_zgloszen.Sekwencja;
 import kolejki_zgloszen.Zegar;
-import kolejki_zgloszen.KolejkaFifoDlugoscStala;
-import kolejki_zgloszen.KolejkaFifoDlugoscZmienna;
-import kolejki_zgloszen.KolejkaLifoDlugoscStala;
-import kolejki_zgloszen.KolejkaLifoDlugoscZmienna;
-import kolejki_zgloszen.KolejkaPriorytetowaFifoDlugoscStala;
-import kolejki_zgloszen.KolejkaPriorytetowaFifoDlugoscZmienna;
-import kolejki_zgloszen.KolejkaPriorytetowaLifoDlugoscStala;
-import kolejki_zgloszen.KolejkaPriorytetowaLifoDlugoscZmienna;
+import kolejki_zgloszen.KOLEJKA_F_OGR_NPR;
+import kolejki_zgloszen.KOLEJKA_F_NOGR_NPR;
+import kolejki_zgloszen.KOLEJKA_L_OGR_NPR;
+import kolejki_zgloszen.KOLEJKA_L_NOGR_NPR;
+import kolejki_zgloszen.KOLEJKA_F_OGR_PR;
+import kolejki_zgloszen.KOLEJKA_F_NOGR_PR;
+import kolejki_zgloszen.KOLEJKA_L_OGR_PR;
+import kolejki_zgloszen.KOLEJKA_L_NOGR_PR;
 
 import java.util.Random;
 
@@ -37,26 +37,26 @@ public class Test {
 		Zegar zegar = new Zegar();
 		Random priorytety = new Random();
 		
-		KolejkaFifoDlugoscStala k11;
-		KolejkaFifoDlugoscStala k12;
-		KolejkaFifoDlugoscZmienna k21;
-		KolejkaFifoDlugoscZmienna k22;
-		KolejkaLifoDlugoscStala k31;
-		KolejkaLifoDlugoscStala k32;
-		KolejkaLifoDlugoscZmienna k41;
-		KolejkaLifoDlugoscZmienna k42;
-		KolejkaPriorytetowaFifoDlugoscStala k51;
-		KolejkaPriorytetowaFifoDlugoscStala k52;
-		KolejkaPriorytetowaFifoDlugoscZmienna k61;
-		KolejkaPriorytetowaFifoDlugoscZmienna k62;
-		KolejkaPriorytetowaLifoDlugoscStala k71;
-		KolejkaPriorytetowaLifoDlugoscStala k72;
-		KolejkaPriorytetowaLifoDlugoscZmienna k81;
-		KolejkaPriorytetowaLifoDlugoscZmienna k82;
+		KOLEJKA_F_OGR_NPR k11;
+		KOLEJKA_F_OGR_NPR k12;
+		KOLEJKA_F_NOGR_NPR k21;
+		KOLEJKA_F_NOGR_NPR k22;
+		KOLEJKA_L_OGR_NPR k31;
+		KOLEJKA_L_OGR_NPR k32;
+		KOLEJKA_L_NOGR_NPR k41;
+		KOLEJKA_L_NOGR_NPR k42;
+		KOLEJKA_F_OGR_PR k51;
+		KOLEJKA_F_OGR_PR k52;
+		KOLEJKA_F_NOGR_PR k61;
+		KOLEJKA_F_NOGR_PR k62;
+		KOLEJKA_L_OGR_PR k71;
+		KOLEJKA_L_OGR_PR k72;
+		KOLEJKA_L_NOGR_PR k81;
+		KOLEJKA_L_NOGR_PR k82;
 		
 		char p = ' ';
 		
-		k11 = new KolejkaFifoDlugoscStala(25000000);
+		k11 = new KOLEJKA_F_OGR_NPR(25000000);
 		
 		stop("KolejkaI k11 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -67,7 +67,7 @@ public class Test {
 		
 		stop("KolejkaI k11 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k12 = new KolejkaFifoDlugoscStala(k11);
+		k12 = new KOLEJKA_F_OGR_NPR(k11);
 		
 		stop("KolejkaI k11 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -91,7 +91,7 @@ public class Test {
 		
 		k12 = null;
 		
-		k21 = new KolejkaFifoDlugoscZmienna();
+		k21 = new KOLEJKA_F_NOGR_NPR();
 		
 		stop("\nKolejkaI k21 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -102,7 +102,7 @@ public class Test {
 		
 		stop("KolejkaI k21 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k22 = new KolejkaFifoDlugoscZmienna(k21);
+		k22 = new KOLEJKA_F_NOGR_NPR(k21);
 		
 		stop("KolejkaI k21 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -126,7 +126,7 @@ public class Test {
 		
 		k22 = null;
 		
-		k31 = new KolejkaLifoDlugoscStala(25000000);
+		k31 = new KOLEJKA_L_OGR_NPR(25000000);
 		
 		stop("\nKolejkaI k31 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -137,7 +137,7 @@ public class Test {
 		
 		stop("KolejkaI k31 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k32 = new KolejkaLifoDlugoscStala(k31);
+		k32 = new KOLEJKA_L_OGR_NPR(k31);
 		
 		stop("KolejkaI k31 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -161,7 +161,7 @@ public class Test {
 		
 		k32 = null;
 		
-		k41 = new KolejkaLifoDlugoscZmienna();
+		k41 = new KOLEJKA_L_NOGR_NPR();
 		
 		stop("\nKolejkaI k41 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -172,7 +172,7 @@ public class Test {
 		
 		stop("KolejkaI k41 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k42 = new KolejkaLifoDlugoscZmienna(k41);
+		k42 = new KOLEJKA_L_NOGR_NPR(k41);
 		
 		stop("KolejkaI k41 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -196,7 +196,7 @@ public class Test {
 		
 		k42 = null;
 		
-		k51 = new KolejkaPriorytetowaFifoDlugoscStala(25000000);
+		k51 = new KOLEJKA_F_OGR_PR(25000000);
 		
 		stop("\nKolejkaI k51 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -207,7 +207,7 @@ public class Test {
 		
 		stop("KolejkaI k51 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k52 = new KolejkaPriorytetowaFifoDlugoscStala(k51);
+		k52 = new KOLEJKA_F_OGR_PR(k51);
 		
 		stop("KolejkaI k51 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -231,7 +231,7 @@ public class Test {
 		
 		k52 = null;
 		
-		k61 = new KolejkaPriorytetowaFifoDlugoscZmienna();
+		k61 = new KOLEJKA_F_NOGR_PR();
 		
 		stop("\nKolejkaI k61 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -242,7 +242,7 @@ public class Test {
 		
 		stop("KolejkaI k61 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k62 = new KolejkaPriorytetowaFifoDlugoscZmienna(k61);
+		k62 = new KOLEJKA_F_NOGR_PR(k61);
 		
 		stop("KolejkaI k61 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -266,7 +266,7 @@ public class Test {
 		
 		k62 = null;
 		
-		k71 = new KolejkaPriorytetowaLifoDlugoscStala(25000000);
+		k71 = new KOLEJKA_L_OGR_PR(25000000);
 		
 		stop("\nKolejkaI k71 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -277,7 +277,7 @@ public class Test {
 		
 		stop("KolejkaI k71 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k72 = new KolejkaPriorytetowaLifoDlugoscStala(k71);
+		k72 = new KOLEJKA_L_OGR_PR(k71);
 		
 		stop("KolejkaI k71 skopiowana - aby kontynuowac, wcisnij p");
 		
@@ -301,7 +301,7 @@ public class Test {
 		
 		k72 = null;
 		
-		k81 = new KolejkaPriorytetowaLifoDlugoscZmienna();
+		k81 = new KOLEJKA_L_NOGR_PR();
 		
 		stop("\nKolejkaI k81 stworzona - aby kontynuowac, wcisnij p");
 		
@@ -312,7 +312,7 @@ public class Test {
 		
 		stop("KolejkaI k81 wypelniona - aby kontynuowac, wcisnij p");
 		
-		k82 = new KolejkaPriorytetowaLifoDlugoscZmienna(k81);
+		k82 = new KOLEJKA_L_NOGR_PR(k81);
 		
 		stop("KolejkaI k81 skopiowana - aby kontynuowac, wcisnij p");
 		

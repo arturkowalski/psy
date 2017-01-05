@@ -2,17 +2,18 @@ package kolejki_zgloszen;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
-public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
+public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 	private final Zgloszenie[] bufor;
 	
 	private int stan;
 	
-	private class KolejkaPriorytetowaFifoDlugoscStalaIt implements Iterator<Zgloszenie> {
-		private KolejkaPriorytetowaFifoDlugoscStala kolejka;
+	private class KOLEJKA_F_OGR_PR_IT implements Iterator<Zgloszenie> {
+		private KOLEJKA_F_OGR_PR kolejka;
 		
-		private KolejkaPriorytetowaFifoDlugoscStalaIt() {
-			kolejka = new KolejkaPriorytetowaFifoDlugoscStala(KolejkaPriorytetowaFifoDlugoscStala.this);
+		private KOLEJKA_F_OGR_PR_IT() {
+			kolejka = new KOLEJKA_F_OGR_PR(KOLEJKA_F_OGR_PR.this);
 		}
 		
 		public boolean hasNext() {
@@ -26,10 +27,6 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
 			
 			return kolejka.usun();
 		}
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KolejkaPriorytetowaFifoDlugoscStalaIt();
 	}
 	
 	private boolean porownanie(int i, int j) {
@@ -91,7 +88,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscStala(final int dlugosc) {
+	public KOLEJKA_F_OGR_PR(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -99,7 +96,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
 		bufor = new Zgloszenie[dlugosc + 1];
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscStala(final Zgloszenie[] tablica) {
+	public KOLEJKA_F_OGR_PR(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
@@ -115,7 +112,7 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public KolejkaPriorytetowaFifoDlugoscStala(final KolejkaPriorytetowaFifoDlugoscStala kolejka) {
+	public KOLEJKA_F_OGR_PR(final KOLEJKA_F_OGR_PR kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
@@ -179,5 +176,27 @@ public final class KolejkaPriorytetowaFifoDlugoscStala implements KolejkaI {
 		//assert strukturaDrzewaPoprawna();
 		
 		return z;
+	}
+	
+	public Iterator<Zgloszenie> iterator() {
+		return new KOLEJKA_F_OGR_PR_IT();
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Zegar zegar = new Zegar();
+		java.util.Random generator = new Random();
+		Zgloszenie[] zgloszenia = new Zgloszenie[10];
+		
+		for (int i = 0; i < 10; ++i) {
+			zgloszenia[i] = new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(),
+				generator.nextInt(10) + 1);
+		}
+		
+		KOLEJKA_F_OGR_PR kolejka = new KOLEJKA_F_OGR_PR(zgloszenia);
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
 	}
 }
