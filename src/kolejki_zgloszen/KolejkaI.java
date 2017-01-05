@@ -19,5 +19,5 @@ public interface KolejkaI extends Iterable<Zgloszenie> {
 	
 	Zgloszenie usun() throws KolejkaPustaWyj;
 	
-	//void usunWybrane(int numer) throws NoSuchElementException;
+	//void usunWybrane(int numer) throws KolejkaPustaWyj;
 }
