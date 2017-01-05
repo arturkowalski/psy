@@ -147,10 +147,6 @@ public final class KOLEJKA_F_NOGR_PR implements KOLEJKA_I {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public int dlugosc() {
-		return bufor.length;
-	}
-	
 	public boolean kolejkaPusta() {
 		return stan == 0;
 	}

@@ -2,7 +2,6 @@ package kolejki_zgloszen;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 	private final Zgloszenie[] bufor;
@@ -127,7 +126,7 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 	}
 	
 	public int dlugosc() {
-		return bufor.length;
+		return bufor.length - 1;
 	}
 	
 	public boolean kolejkaPelna() {
@@ -185,7 +184,7 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 	public static void main(String[] args) {
 		Sekwencja numery = new Sekwencja(1, 1);
 		Zegar zegar = new Zegar();
-		java.util.Random generator = new Random();
+		java.util.Random generator = new java.util.Random();
 		Zgloszenie[] zgloszenia = new Zgloszenie[10];
 		
 		for (int i = 0; i < 10; ++i) {

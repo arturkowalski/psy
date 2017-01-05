@@ -130,7 +130,7 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 	}
 	
 	public int dlugosc() {
-		return bufor.length;
+		return bufor.length - 1;
 	}
 	
 	public boolean kolejkaPelna() {
