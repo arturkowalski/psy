@@ -21,7 +21,7 @@ public final class KolejkaFifoDlugoscStala implements Kolejka {
 				throw new NoSuchElementException();
 			}
 			
-			return bufor[i++];
+			return bufor[(iu + i++) % bufor.length];
 		}
 	}
 	
