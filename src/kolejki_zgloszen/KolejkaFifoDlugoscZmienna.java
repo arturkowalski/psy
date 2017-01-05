@@ -161,4 +161,88 @@ public final class KolejkaFifoDlugoscZmienna implements KolejkaI {
 		
 		return z;
 	}
+	
+	public void usunWybrane(int numer) {
+		if (kolejkaPusta()) {
+			throw new KolejkaPustaWyj();
+		}
+		
+		Zgloszenie[] tab = new Zgloszenie[bufor.length];
+		
+		int ix = indeks(numer);
+		bufor[ix] = null;
+		
+		if (iu < iw || bufor.length - iu == stan) {
+			System.arraycopy(bufor, iu, tab, 0, ix - iu);
+			System.arraycopy(bufor, ix + 1, tab, ix - iu, stan - ix - 1);
+		}
+		else {
+			if (ix >= iu && ix < bufor.length - 1) {
+				System.arraycopy(bufor, iu, tab, 0, ix - iu);
+				System.arraycopy(bufor, ix + 1, tab, ix - iu, bufor.length - ix - 1);
+				System.arraycopy(bufor, 0, tab, -iu + bufor.length -  1, stan - bufor.length + iu);
+			}
+			else if (ix >= iu && ix == bufor.length - 1) {
+				System.arraycopy(bufor, iu, tab, 0, ix - iu);
+				System.arraycopy(bufor, 0, tab, ix - iu, stan - ix + iu - 1);
+			}
+			else if (ix < iu && ix < iw - 1) {
+				System.arraycopy(bufor, iu, tab, 0, bufor.length - iu);
+				System.arraycopy(bufor, 0, tab, bufor.length - iu, ix);
+				System.arraycopy(bufor, ix + 1, tab, bufor.length - iu + ix, iw - ix - 1);
+			}
+			else {
+				System.arraycopy(bufor, iu, tab, 0, bufor.length - iu);
+				System.arraycopy(bufor, 0, tab, bufor.length - iu, ix);
+			}
+		}
+		
+		bufor = tab;
+		iw = --stan;
+		
+		if (stan > 0 && stan == bufor.length / 4) {
+			zmienDlugosc(bufor.length / 2);
+		}
+		
+		iu = 0;
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Zegar zegar = new Zegar();
+		java.util.Random generator = new java.util.Random();
+		KolejkaFifoDlugoscZmienna kolejka = new KolejkaFifoDlugoscZmienna(1);
+		
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.usun();
+		kolejka.usun();
+		kolejka.usun();
+		kolejka.usun();
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
+		
+		System.out.println("Zawartosc poczatkowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		kolejka.usunWybrane(11);
+		
+		System.out.println("\nZawartosc wyjsciowa:");
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
+		
+		
+	}
 }
