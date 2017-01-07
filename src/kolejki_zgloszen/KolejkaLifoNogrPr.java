@@ -1,18 +1,19 @@
 package kolejki_zgloszen;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
+public final class KolejkaLifoNogrPr implements KolejkaI {
 	private Zgloszenie[] bufor;
-	
+	private final Comparator<Zgloszenie> komparator;
 	private int stan;
 	
-	private class KOLEJKA_L_NOGR_PR_IT implements Iterator<Zgloszenie> {
-		private KOLEJKA_L_NOGR_PR kolejka;
+	private class KolejkaLifoNogrPrIt implements Iterator<Zgloszenie> {
+		private KolejkaLifoNogrPr kolejka;
 		
-		private KOLEJKA_L_NOGR_PR_IT() {
-			kolejka = new KOLEJKA_L_NOGR_PR(KOLEJKA_L_NOGR_PR.this);
+		private KolejkaLifoNogrPrIt() {
+			kolejka = new KolejkaLifoNogrPr(KolejkaLifoNogrPr.this);
 		}
 		
 		public boolean hasNext() {
@@ -21,7 +22,7 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		
 		public Zgloszenie next() {
 			if (!hasNext()){
-				throw new NoSuchElementException("Iterator wykorzystany");
+				throw new NoSuchElementException("Iterator zuzytzy");
 			}
 			
 			return kolejka.usun();
@@ -29,7 +30,7 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KOLEJKA_L_NOGR_PR_IT();
+		return new KolejkaLifoNogrPrIt();
 	}
 	
 	private boolean buforPelny() {
@@ -38,22 +39,17 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 	
 	private void zmienDlugosc(int dl) {
 		//assert dl != bufor.length && dl > stan;
-		
 		Zgloszenie[] tab = new Zgloszenie[dl];
-		
 		System.arraycopy(bufor, 1, tab, 1, stan);
-		
 		bufor = tab;
 	}
 	
 	private boolean porownanie(int i, int j) {
-		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
-			== bufor[j].priorytet() && bufor[i].numer() < bufor[j].numer();
+		return komparator.compare(bufor[i], bufor[j]) < 0;
 	}
 	
 	private void zamien(int i, int j) {
 		Zgloszenie z = bufor[i];
-		
 		bufor[i] = bufor[j];
 		bufor[j] = z;
 	}
@@ -105,26 +101,27 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KOLEJKA_L_NOGR_PR(final int dlugosc) {
+	public KolejkaLifoNogrPr(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
+		komparator = Zgloszenie.komparatorLifo();
 	}
 	
-	public KOLEJKA_L_NOGR_PR() {
+	public KolejkaLifoNogrPr() {
 		this(30);
 	}
 	
-	public KOLEJKA_L_NOGR_PR(final Zgloszenie[] tablica) {
+	public KolejkaLifoNogrPr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
-		
 		System.arraycopy(tablica, 0, bufor, 1 ,tablica.length);
+		komparator = Zgloszenie.komparatorLifo();
 		
 		for (int k = stan / 2; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
@@ -133,17 +130,15 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public KOLEJKA_L_NOGR_PR(final KOLEJKA_L_NOGR_PR kolejka) {
+	public KolejkaLifoNogrPr(final KolejkaLifoNogrPr kolejka) {
 		if (kolejka.bufor == null) {
 			throw new IllegalArgumentException("Kolejka-parametr null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
-		
 		System.arraycopy(kolejka.bufor, 1, bufor, 1, kolejka.stan);
-		
+		komparator = Zgloszenie.komparatorLifo();
 		stan = kolejka.stan;
-		
 		//assert strukturaDrzewaPoprawna();
 	}
 	
@@ -162,7 +157,6 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		
 		bufor[++stan] = zgloszenie;
 		przywrocStruktureOdDolu(stan);
-		
 		//assert strukturaDrzewaPoprawna();
 	}
 	
@@ -180,10 +174,8 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		}
 		
 		Zgloszenie z = bufor[1];
-		
 		zamien(1, stan--);
 		przywrocStruktureOdGory(1);
-		
 		bufor[stan + 1] = null;
 		
 		if ((stan > 0) && (stan == (bufor.length - 1) / 4)) {
@@ -191,7 +183,6 @@ public final class KOLEJKA_L_NOGR_PR implements KOLEJKA_I {
 		}
 		
 		//assert strukturaDrzewaPoprawna();
-		
 		return z;
 	}
 }

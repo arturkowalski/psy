@@ -2,13 +2,10 @@ package kolejki_zgloszen;
 
 public final class Sekwencja {
 	private final int pierwszy, roznica;
-	
 	private int nastepny;
 	
-	// Dodac trzeci parametr (wynik dodawania)
 	private boolean add(int a, int b) {
 		long c = (long) a + (long) b;
-		
 		return c < 0x80000000 || c > 0x7FFFFFFF;
 	}
 	
@@ -19,19 +16,25 @@ public final class Sekwencja {
 		
 		this.pierwszy = pierwszy;
 		this.roznica = roznica;
-		
 		nastepny = pierwszy - roznica;
 	}
 	
-	public int nastepny() throws SekwencjaWykorzystanaWyj {
+	public int pierwszy() {
+		return pierwszy;
+	}
+	
+	public int roznica() {
+		return roznica;
+	}
+	
+	public int nastepny() throws SekwencjaZuzytaWyj {
 		if (add(nastepny, roznica)) {
 			if (nastepny + roznica != pierwszy) {
-				throw new SekwencjaWykorzystanaWyj();
+				throw new SekwencjaZuzytaWyj();
 			}
 		}
 		
 		nastepny += roznica;
-		
 		return nastepny;
 	}
 	
@@ -43,13 +46,5 @@ public final class Sekwencja {
 		}
 		
 		return wyn;
-	}
-	
-	public int pierwszy() {
-		return pierwszy;
-	}
-	
-	public int roznica() {
-		return roznica;
 	}
 }

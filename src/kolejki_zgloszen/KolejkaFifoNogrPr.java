@@ -1,18 +1,19 @@
 package kolejki_zgloszen;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
-	private final Zgloszenie[] bufor;
-	
+public final class KolejkaFifoNogrPr implements KolejkaI {
+	private Zgloszenie[] bufor;
+	private final Comparator<Zgloszenie> komparator;
 	private int stan;
 	
-	private class KOLEJKA_F_OGR_PR_IT implements Iterator<Zgloszenie> {
-		private KOLEJKA_F_OGR_PR kolejka;
+	private class KolejkaFifoNogrPrIt implements Iterator<Zgloszenie> {
+		private KolejkaFifoNogrPr kolejka;
 		
-		private KOLEJKA_F_OGR_PR_IT() {
-			kolejka = new KOLEJKA_F_OGR_PR(KOLEJKA_F_OGR_PR.this);
+		private KolejkaFifoNogrPrIt() {
+			kolejka = new KolejkaFifoNogrPr(KolejkaFifoNogrPr.this);
 		}
 		
 		public boolean hasNext() {
@@ -21,21 +22,34 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 		
 		public Zgloszenie next() {
 			if (!hasNext()){
-				throw new NoSuchElementException("Iterator wykorzystany");
+				throw new NoSuchElementException("Iterator zuzyty");
 			}
 			
 			return kolejka.usun();
 		}
 	}
 	
+	public Iterator<Zgloszenie> iterator() {
+		return new KolejkaFifoNogrPrIt();
+	}
+	
+	private boolean buforPelny() {
+		return stan == bufor.length - 1;
+	}
+	
+	private void zmienDlugosc(int dl) {
+		//assert dl != bufor.length && dl > stan;
+		Zgloszenie[] tab = new Zgloszenie[dl];
+		System.arraycopy(bufor, 1, tab, 1, stan);
+		bufor = tab;
+	}
+	
 	private boolean porownanie(int i, int j) {
-		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
-			==  bufor[j].priorytet() && bufor[i].numer() > bufor[j].numer();
+		return komparator.compare(bufor[i], bufor[j]) < 0;
 	}
 	
 	private void zamien(int i, int j) {
 		Zgloszenie z = bufor[i];
-		
 		bufor[i] = bufor[j];
 		bufor[j] = z;
 	}
@@ -87,22 +101,27 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KOLEJKA_F_OGR_PR(final int dlugosc) {
+	public KolejkaFifoNogrPr(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
+		komparator = Zgloszenie.komparatorFifo();
 	}
 	
-	public KOLEJKA_F_OGR_PR(final Zgloszenie[] tablica) {
+	public KolejkaFifoNogrPr() {
+		this(30);
+	}
+	
+	public KolejkaFifoNogrPr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
-		
 		System.arraycopy(tablica, 0, bufor, 1, tablica.length);
+		komparator = Zgloszenie.komparatorFifo();
 		
 		for (int k = stan / 2; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
@@ -111,26 +130,16 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public KOLEJKA_F_OGR_PR(final KOLEJKA_F_OGR_PR kolejka) {
+	public KolejkaFifoNogrPr(final KolejkaFifoNogrPr kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
-		
-		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.bufor.length);
-		
+		System.arraycopy(kolejka.bufor, 1, bufor, 1, kolejka.stan);
+		komparator = Zgloszenie.komparatorFifo();
 		stan = kolejka.stan;
-		
 		//assert strukturaDrzewaPoprawna();
-	}
-	
-	public int dlugosc() {
-		return bufor.length - 1;
-	}
-	
-	public boolean kolejkaPelna() {
-		return stan == bufor.length - 1;
 	}
 	
 	public boolean kolejkaPusta() {
@@ -142,13 +151,12 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 	}
 	
 	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
-		if (kolejkaPelna()) {
-			throw new KolejkaPelnaWyj(bufor.length - 1, zgloszenie);
+		if (buforPelny()) {
+			zmienDlugosc(2 * bufor.length);
 		}
 		
 		bufor[++stan] = zgloszenie;
 		przywrocStruktureOdDolu(stan);
-		
 		//assert strukturaDrzewaPoprawna();
 	}
 	
@@ -166,36 +174,15 @@ public final class KOLEJKA_F_OGR_PR implements KOLEJKA_I {
 		}
 		
 		Zgloszenie z = bufor[1];
-		
 		zamien(1, stan--);
 		przywrocStruktureOdGory(1);
-		
 		bufor[stan + 1] = null;
 		
+		if ((stan > 0) && (stan == (bufor.length - 1) / 4)) {
+			zmienDlugosc(bufor.length / 2);
+		}
+		
 		//assert strukturaDrzewaPoprawna();
-		
 		return z;
-	}
-	
-	public Iterator<Zgloszenie> iterator() {
-		return new KOLEJKA_F_OGR_PR_IT();
-	}
-	
-	public static void main(String[] args) {
-		Sekwencja numery = new Sekwencja(1, 1);
-		Zegar zegar = new Zegar();
-		java.util.Random generator = new java.util.Random();
-		Zgloszenie[] zgloszenia = new Zgloszenie[10];
-		
-		for (int i = 0; i < 10; ++i) {
-			zgloszenia[i] = new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(),
-				generator.nextInt(10) + 1);
-		}
-		
-		KOLEJKA_F_OGR_PR kolejka = new KOLEJKA_F_OGR_PR(zgloszenia);
-		
-		for (Zgloszenie z : kolejka) {
-			System.out.println(z.toString());
-		}
 	}
 }

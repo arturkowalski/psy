@@ -3,15 +3,14 @@ package kolejki_zgloszen;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
-	private Zgloszenie[] bufor;
-	
+public final class KolejkaLifoOgrNpr implements KolejkaI {
+	private final Zgloszenie[] bufor;
 	private int w;
 	
-	private class KOLEJKA_L_NOGR_NPR_IT implements Iterator<Zgloszenie> {
+	private class KolejkaLifoOgrNprIt implements Iterator<Zgloszenie> {
 		private int i;
 		
-		private KOLEJKA_L_NOGR_NPR_IT() {
+		private KolejkaLifoOgrNprIt() {
 			i = w - 1;
 		}
 		
@@ -21,25 +20,11 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		
 		public Zgloszenie next() {
 			if (!hasNext()) {
-				throw new NoSuchElementException("Iterator wykorzystany");
+				throw new NoSuchElementException("Iterator zuzyty");
 			}
 			
 			return bufor[i--];
 		}
-	}
-	
-	private boolean buforPelny() {
-		return w == bufor.length;
-	}
-	
-	private void zmienDlugosc(final int dl) {
-		assert dl != bufor.length && dl >= w;
-		
-		Zgloszenie tab[] = new Zgloszenie[dl];
-		
-		System.arraycopy(bufor, 0, tab, 0, w);
-		
-		bufor = tab;
 	}
 	
 	private int indeks(int nr) {
@@ -52,7 +37,7 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
 	}
 	
-	public KOLEJKA_L_NOGR_NPR(final int dlugosc) {
+	public KolejkaLifoOgrNpr(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
@@ -60,32 +45,32 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		bufor = new Zgloszenie[dlugosc];
 	}
 	
-	public KOLEJKA_L_NOGR_NPR() {
-		this(30);
-	}
-	
-	public KOLEJKA_L_NOGR_NPR(final Zgloszenie[] tablica) {
+	public KolejkaLifoOgrNpr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[tablica.length];
-		
 		System.arraycopy(tablica, 0, bufor, 0, tablica.length);
-		
 		w = tablica.length;
 	}
 	
-	public KOLEJKA_L_NOGR_NPR(final KOLEJKA_L_NOGR_NPR kolejka) {
+	public KolejkaLifoOgrNpr(final kolejki_zgloszen.KolejkaLifoOgrNpr kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
-		
 		System.arraycopy(kolejka.bufor, 0, bufor, 0, kolejka.w);
-		
 		w = kolejka.w;
+	}
+	
+	public int dlugosc() {
+		return bufor.length;
+	}
+	
+	public boolean kolejkaPelna() {
+		return w == bufor.length;
 	}
 	
 	public boolean kolejkaPusta() {
@@ -96,16 +81,16 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		return w;
 	}
 	
-	public void wstaw(final Zgloszenie zgloszenie) {
-		if (buforPelny()) {
-			zmienDlugosc(2 * bufor.length);
+	public void wstaw(final Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+		if (kolejkaPelna()) {
+			throw new KolejkaPelnaWyj(bufor.length, zgloszenie);
 		}
 		
 		bufor[w++] = zgloszenie;
 	}
 	
 	public Zgloszenie nastepne() throws KolejkaPustaWyj {
-		if (w == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
@@ -113,18 +98,12 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 	}
 	
 	public Zgloszenie usun() throws KolejkaPustaWyj {
-		if (w == 0) {
+		if (kolejkaPusta()) {
 			throw new KolejkaPustaWyj();
 		}
 		
 		Zgloszenie z = bufor[--w];
-		
 		bufor[w] = null;
-		
-		if (w > 0 && w == bufor.length / 4) {
-			zmienDlugosc(bufor.length / 2);
-		}
-		
 		return z;
 	}
 	
@@ -141,30 +120,22 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		}
 		
 		bufor[--w] = null;
-		
-		if (w > 0 && w == bufor.length / 4) {
-			zmienDlugosc(bufor.length / 2);
-		}
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KOLEJKA_L_NOGR_NPR_IT();
+		return new KolejkaLifoOgrNprIt();
 	}
 	
 	public static void main(String[] args) {
 		Sekwencja numery = new Sekwencja(1, 1);
-		Zegar zegar = new Zegar();
+		Stoper stoper = new Stoper();
 		java.util.Random generator = new java.util.Random();
-		KOLEJKA_L_NOGR_NPR kolejka = new KOLEJKA_L_NOGR_NPR(3);
-		
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		kolejka.wstaw(new Zgloszenie(numery.nastepny(), zegar.czasOdStartu(), generator.nextInt(10) + 1));
-		
+		kolejki_zgloszen.KolejkaLifoOgrNpr kolejka = new kolejki_zgloszen.KolejkaLifoOgrNpr(10);
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
 		System.out.println("Zawartosc wyjsciowa:");
 		
 		for (Zgloszenie z : kolejka) {
@@ -172,17 +143,22 @@ public final class KOLEJKA_L_NOGR_NPR implements KOLEJKA_I {
 		}
 		
 		kolejka.usunWybrane(3);
-		
 		System.out.println("\nTrzecie zgloszenie usuniete:");
 		
 		for (Zgloszenie z : kolejka) {
 			System.out.println(z.toString());
 		}
 		
-		System.out.println("\nZgloszenia usuniete:");
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
+		System.out.println("\nKolejka pelna:");
 		
-		while (!kolejka.kolejkaPusta()) {
-			System.out.println(kolejka.usun().toString());
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
 		}
 	}
 }

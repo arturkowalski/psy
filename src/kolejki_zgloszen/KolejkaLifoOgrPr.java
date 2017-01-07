@@ -1,18 +1,19 @@
 package kolejki_zgloszen;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
+public final class KolejkaLifoOgrPr implements KolejkaI {
 	private final Zgloszenie[] bufor;
-	
+	private final Comparator<Zgloszenie> komparator;
 	private int stan;
 	
-	private class KOLEJKA_L_OGR_PR_IT implements Iterator<Zgloszenie> {
-		private KOLEJKA_L_OGR_PR kolejka;
+	private class KolejkaLifoOgrPrIt implements Iterator<Zgloszenie> {
+		private KolejkaLifoOgrPr kolejka;
 		
-		private KOLEJKA_L_OGR_PR_IT() {
-			kolejka = new KOLEJKA_L_OGR_PR(KOLEJKA_L_OGR_PR.this);
+		private KolejkaLifoOgrPrIt() {
+			kolejka = new KolejkaLifoOgrPr(KolejkaLifoOgrPr.this);
 		}
 		
 		public boolean hasNext() {
@@ -29,17 +30,15 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 	}
 	
 	public Iterator<Zgloszenie> iterator() {
-		return new KOLEJKA_L_OGR_PR_IT();
+		return new KolejkaLifoOgrPrIt();
 	}
 	
 	private boolean porownanie(int i, int j) {
-		return bufor[i].priorytet() < bufor[j].priorytet() || bufor[i].priorytet()
-			==  bufor[j].priorytet() && bufor[i].numer() < bufor[j].numer();
+		return komparator.compare(bufor[i], bufor[j]) < 0;
 	}
 	
 	private void zamien(int i, int j) {
 		Zgloszenie z = bufor[i];
-		
 		bufor[i] = bufor[j];
 		bufor[j] = z;
 	}
@@ -91,22 +90,23 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 		return strukturaPoddrzewaPoprawna(1);
 	}
 	
-	public KOLEJKA_L_OGR_PR(final int dlugosc) {
+	public KolejkaLifoOgrPr(final int dlugosc) {
 		if (dlugosc <= 0) {
 			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
+		komparator = Zgloszenie.komparatorLifo();
 	}
 	
-	public KOLEJKA_L_OGR_PR(final Zgloszenie[] tablica) {
+	public KolejkaLifoOgrPr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
 			throw new IllegalArgumentException("Tablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
-		
 		System.arraycopy(tablica, 0, bufor, 1, tablica.length);
+		komparator = Zgloszenie.komparatorLifo();
 		
 		for (int k = stan / 2; k >= 1; --k) {
 			przywrocStruktureOdGory(k);
@@ -115,17 +115,15 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 		//assert strukturaDrzewaPoprawna();
 	}
 	
-	public KOLEJKA_L_OGR_PR(final KOLEJKA_L_OGR_PR kolejka) {
+	public KolejkaLifoOgrPr(final KolejkaLifoOgrPr kolejka) {
 		if (kolejka == null) {
 			throw new IllegalArgumentException("Kolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
-		
 		System.arraycopy(kolejka.bufor, 1, bufor, 1, kolejka.stan);
-		
+		komparator = Zgloszenie.komparatorLifo();
 		stan = kolejka.stan;
-		
 		//assert strukturaDrzewaPoprawna();
 	}
 	
@@ -152,7 +150,6 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 		
 		bufor[++stan] = zgloszenie;
 		przywrocStruktureOdDolu(stan);
-		
 		//assert strukturaDrzewaPoprawna();
 	}
 	
@@ -170,14 +167,28 @@ public final class KOLEJKA_L_OGR_PR implements KOLEJKA_I {
 		}
 		
 		Zgloszenie z = bufor[1];
-		
 		zamien(1, stan--);
 		przywrocStruktureOdGory(1);
-		
 		bufor[stan + 1] = null;
-		
 		//assert strukturaDrzewaPoprawna();
-		
 		return z;
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(1, 1);
+		Stoper stoper = new Stoper();
+		java.util.Random generator = new java.util.Random();
+		Zgloszenie[] zgloszenia = new Zgloszenie[15000000];
+		KolejkaLifoOgrPr kolejka = null;
+		
+		for (int i = 0; i < 15000000; ++i) {
+			zgloszenia[i] = new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1);
+		}
+		
+		kolejka = new KolejkaLifoOgrPr(zgloszenia);
+		
+		for (Zgloszenie z : kolejka) {
+			System.out.println(z.toString());
+		}
 	}
 }

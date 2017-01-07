@@ -1,5 +1,7 @@
 package kolejki_zgloszen;
 
+import java.util.Comparator;
+
 public final class Zgloszenie {
 	private final int numer;
 	private final double czasNadejscia;
@@ -29,6 +31,38 @@ public final class Zgloszenie {
 	
 	public int priorytet() {
 		return priorytet;
+	}
+	
+	public static Comparator<Zgloszenie> komparatorFifo() {
+		return new Comparator<Zgloszenie>() {
+			public int compare(Zgloszenie z1, Zgloszenie z2) {
+				if (z1.priorytet < z2.priorytet || z1.priorytet ==  z2.priorytet && z1.numer > z2.numer) {
+					return -1;
+				}
+				else if (z1.priorytet == z2.priorytet && z1.numer == z2.numer) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+		};
+	}
+	
+	public static Comparator<Zgloszenie> komparatorLifo() {
+		return new Comparator<Zgloszenie>() {
+			public int compare(Zgloszenie z1, Zgloszenie z2) {
+				if (z1.priorytet < z2.priorytet || z1.priorytet ==  z2.priorytet && z1.numer < z2.numer) {
+					return -1;
+				}
+				else if (z1.priorytet == z2.priorytet && z1.numer == z2.numer) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+		};
 	}
 	
 	public String toString() {
