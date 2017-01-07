@@ -9,6 +9,7 @@ public final class Sekwencja {
 		return c < 0x80000000 || c > 0x7FFFFFFF;
 	}
 	
+	// Dodac pole ostatni (numer)
 	public Sekwencja(final int pierwszy, final int roznica) {
 		if (roznica == 0) {
 			throw new IllegalArgumentException("\nRoznica rowna 0");
@@ -57,7 +58,7 @@ public final class Sekwencja {
 	}
 	
 	public static void main(String[] args) {
-		Sekwencja numery = new Sekwencja(0, 1000);
+		Sekwencja numery = new Sekwencja(2000000000, -1000);
 		try {
 			while (true) {
 				System.out.println(numery.nastepny());

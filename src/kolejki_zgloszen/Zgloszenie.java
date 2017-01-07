@@ -74,7 +74,8 @@ public final class Zgloszenie {
 		Stoper stoper = new Stoper();
 		java.util.Random generator = new java.util.Random();
 		Zgloszenie[] zgloszenia = new Zgloszenie[3];
-		Comparator<Zgloszenie> komparator = Zgloszenie.komparatorFifo();
+		Comparator<Zgloszenie> komparatorF = Zgloszenie.komparatorFifo();
+		Comparator<Zgloszenie> komparatorL = Zgloszenie.komparatorLifo();
 		
 		System.out.println("Tablica zgloszen:");
 		for (int i = 0; i < zgloszenia.length; ++i) {
@@ -82,14 +83,30 @@ public final class Zgloszenie {
 			System.out.println(zgloszenia[i]);
 		}
 		
-		System.out.println("\nWyniki porownan:");
+		System.out.println("\nKomparator pierwszy:");
 		for (Zgloszenie z1 : zgloszenia) {
 			for (Zgloszenie z2 : zgloszenia) {
 				System.out.print(z1 + " ");
-				if (komparator.compare(z1, z2) < 0) {
+				if (komparatorF.compare(z1, z2) < 0) {
 					System.out.println("< " + z2);
 				}
-				else if (komparator.compare(z1, z2) == 0) {
+				else if (komparatorF.compare(z1, z2) == 0) {
+					System.out.println("= " + z2);
+				}
+				else {
+					System.out.println("> " + z2);
+				}
+			}
+		}
+		
+		System.out.println("\nKomparator drugi:");
+		for (Zgloszenie z1 : zgloszenia) {
+			for (Zgloszenie z2 : zgloszenia) {
+				System.out.print(z1 + " ");
+				if (komparatorL.compare(z1, z2) < 0) {
+					System.out.println("< " + z2);
+				}
+				else if (komparatorL.compare(z1, z2) == 0) {
 					System.out.println("= " + z2);
 				}
 				else {
