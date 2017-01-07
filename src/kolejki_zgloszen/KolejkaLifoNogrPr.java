@@ -22,7 +22,7 @@ public final class KolejkaLifoNogrPr implements KolejkaI {
 		
 		public Zgloszenie next() {
 			if (!hasNext()){
-				throw new NoSuchElementException("Iterator zuzytzy");
+				throw new NoSuchElementException("\nIterator zuzytzy");
 			}
 			
 			return kolejka.usun();
@@ -103,7 +103,7 @@ public final class KolejkaLifoNogrPr implements KolejkaI {
 	
 	public KolejkaLifoNogrPr(final int dlugosc) {
 		if (dlugosc <= 0) {
-			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
+			throw new IllegalArgumentException("\nDlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
@@ -116,7 +116,7 @@ public final class KolejkaLifoNogrPr implements KolejkaI {
 	
 	public KolejkaLifoNogrPr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
-			throw new IllegalArgumentException("Tablica-parametr rowna null");
+			throw new IllegalArgumentException("\nTablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
@@ -132,7 +132,7 @@ public final class KolejkaLifoNogrPr implements KolejkaI {
 	
 	public KolejkaLifoNogrPr(final KolejkaLifoNogrPr kolejka) {
 		if (kolejka.bufor == null) {
-			throw new IllegalArgumentException("Kolejka-parametr null");
+			throw new IllegalArgumentException("\nKolejka-parametr null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];

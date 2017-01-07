@@ -11,12 +11,20 @@ public final class Sekwencja {
 	
 	public Sekwencja(final int pierwszy, final int roznica) {
 		if (roznica == 0) {
-			throw new IllegalArgumentException("Roznica rowna 0");
+			throw new IllegalArgumentException("\nRoznica rowna 0");
 		}
 		
 		this.pierwszy = pierwszy;
 		this.roznica = roznica;
 		nastepny = pierwszy - roznica;
+	}
+	
+	public Sekwencja() {
+		this(1, 1);
+	}
+	
+	public Sekwencja(final int pierwszy) {
+		this(pierwszy, 1);
 	}
 	
 	public int pierwszy() {
@@ -46,5 +54,17 @@ public final class Sekwencja {
 		}
 		
 		return wyn;
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja(0, 1000);
+		try {
+			while (true) {
+				System.out.println(numery.nastepny());
+			}
+		}
+		catch (SekwencjaZuzytaWyj wyj) {
+			System.out.println(wyj.toString());
+		}
 	}
 }

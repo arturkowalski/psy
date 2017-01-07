@@ -9,11 +9,11 @@ public final class Zgloszenie {
 	
 	public Zgloszenie(final int numer, final double czasNadejscia, final int priorytet) {
 		if (czasNadejscia < 0.0) {
-			throw new IllegalArgumentException("Czas nadejscia mniejszy niz 0");
+			throw new IllegalArgumentException("\nCzas nadejscia mniejszy niz 0");
 		}
 		
 		if (priorytet < 1 || priorytet > 10) {
-			throw new IllegalArgumentException("Priorytet spoza zakresu");
+			throw new IllegalArgumentException("\nPriorytet spoza zakresu");
 		}
 		
 		this.numer = numer;
@@ -67,5 +67,35 @@ public final class Zgloszenie {
 	
 	public String toString() {
 		return "Zgloszenie " + numer + "/" + czasNadejscia + "/" + priorytet;
+	}
+	
+	public static void main(String[] args) {
+		Sekwencja numery = new Sekwencja();
+		Stoper stoper = new Stoper();
+		java.util.Random generator = new java.util.Random();
+		Zgloszenie[] zgloszenia = new Zgloszenie[3];
+		Comparator<Zgloszenie> komparator = Zgloszenie.komparatorFifo();
+		
+		System.out.println("Tablica zgloszen:");
+		for (int i = 0; i < zgloszenia.length; ++i) {
+			zgloszenia[i] = new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1);
+			System.out.println(zgloszenia[i]);
+		}
+		
+		System.out.println("\nWyniki porownan:");
+		for (Zgloszenie z1 : zgloszenia) {
+			for (Zgloszenie z2 : zgloszenia) {
+				System.out.print(z1 + " ");
+				if (komparator.compare(z1, z2) < 0) {
+					System.out.println("< " + z2);
+				}
+				else if (komparator.compare(z1, z2) == 0) {
+					System.out.println("= " + z2);
+				}
+				else {
+					System.out.println("> " + z2);
+				}
+			}
+		}
 	}
 }

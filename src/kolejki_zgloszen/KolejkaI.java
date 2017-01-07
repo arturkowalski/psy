@@ -2,11 +2,11 @@ package kolejki_zgloszen;
 
 public interface KolejkaI extends Iterable<Zgloszenie> {
 	default int dlugosc() {
-		throw new UnsupportedOperationException("Dlugosc bufora niedostepna");
+		throw new UnsupportedOperationException("\nDlugosc bufora niedostepna");
 	}
 	
 	default boolean kolejkaPelna() {
-		throw new UnsupportedOperationException("Kolejka nie moze byc pelna");
+		throw new UnsupportedOperationException("\nKolejka nie moze byc pelna");
 	}
 	
 	boolean kolejkaPusta();

@@ -22,7 +22,7 @@ public final class KolejkaFifoOgrPr implements KolejkaI {
 		
 		public Zgloszenie next() {
 			if (!hasNext()){
-				throw new NoSuchElementException("Iterator zuzyty");
+				throw new NoSuchElementException("\nIterator zuzyty");
 			}
 			
 			return kolejka.usun();
@@ -88,7 +88,7 @@ public final class KolejkaFifoOgrPr implements KolejkaI {
 	
 	public KolejkaFifoOgrPr(final int dlugosc) {
 		if (dlugosc <= 0) {
-			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
+			throw new IllegalArgumentException("\nDlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc + 1];
@@ -97,7 +97,7 @@ public final class KolejkaFifoOgrPr implements KolejkaI {
 	
 	public KolejkaFifoOgrPr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
-			throw new IllegalArgumentException("Tablica-parametr rowna null");
+			throw new IllegalArgumentException("\nTablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[(stan = tablica.length) + 1];
@@ -113,7 +113,7 @@ public final class KolejkaFifoOgrPr implements KolejkaI {
 	
 	public KolejkaFifoOgrPr(final KolejkaFifoOgrPr kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+			throw new IllegalArgumentException("\nKolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];

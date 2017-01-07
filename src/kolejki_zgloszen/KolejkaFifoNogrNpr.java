@@ -19,7 +19,7 @@ public final class KolejkaFifoNogrNpr implements KolejkaI {
 		
 		public Zgloszenie next() {
 			if (!hasNext()) {
-				throw new NoSuchElementException("Iterator zuzyty");
+				throw new NoSuchElementException("\nIterator zuzyty");
 			}
 			
 			return bufor[(iu + i++) % bufor.length];
@@ -67,12 +67,12 @@ public final class KolejkaFifoNogrNpr implements KolejkaI {
 			}
 		}
 		
-		throw new NoSuchElementException("Nie ma zgloszenia numer " + nr);
+		throw new NoSuchElementException("\nNie ma zgloszenia numer " + nr);
 	}
 	
 	public KolejkaFifoNogrNpr(final int dlugosc) {
 		if (dlugosc <= 0) {
-			throw new IllegalArgumentException("Dlugosc mniejsza niz 1");
+			throw new IllegalArgumentException("\nDlugosc mniejsza niz 1");
 		}
 		
 		bufor = new Zgloszenie[dlugosc];
@@ -84,7 +84,7 @@ public final class KolejkaFifoNogrNpr implements KolejkaI {
 	
 	public KolejkaFifoNogrNpr(final Zgloszenie[] tablica) {
 		if (tablica == null) {
-			throw new IllegalArgumentException("Tablica-parametr rowna null");
+			throw new IllegalArgumentException("\nTablica-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[tablica.length];
@@ -94,7 +94,7 @@ public final class KolejkaFifoNogrNpr implements KolejkaI {
 	
 	public KolejkaFifoNogrNpr(final KolejkaFifoNogrNpr kolejka) {
 		if (kolejka == null) {
-			throw new IllegalArgumentException("Kolejka-parametr rowna null");
+			throw new IllegalArgumentException("\nKolejka-parametr rowna null");
 		}
 		
 		bufor = new Zgloszenie[kolejka.bufor.length];
@@ -218,15 +218,15 @@ public final class KolejkaFifoNogrNpr implements KolejkaI {
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
 		kolejka.wstaw(new Zgloszenie(numery.nastepny(), stoper.czas(), generator.nextInt(10) + 1));
-		System.out.println("Zawartosc poczatkowa:");
 		
+		System.out.println("Zawartosc poczatkowa:");
 		for (Zgloszenie z : kolejka) {
 			System.out.println(z.toString());
 		}
 		
 		kolejka.usunWybrane(11);
-		System.out.println("\nZawartosc wyjsciowa:");
 		
+		System.out.println("\nZawartosc wyjsciowa:");
 		for (Zgloszenie z : kolejka) {
 			System.out.println(z.toString());
 		}
