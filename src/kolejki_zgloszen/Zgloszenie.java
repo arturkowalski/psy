@@ -83,7 +83,7 @@ public final class Zgloszenie {
 			System.out.println(zgloszenia[i]);
 		}
 		
-		System.out.println("\nKomparator pierwszy:");
+		System.out.println("\nKomparator FIFO:");
 		for (Zgloszenie z1 : zgloszenia) {
 			for (Zgloszenie z2 : zgloszenia) {
 				System.out.print(z1 + " ");
@@ -99,7 +99,7 @@ public final class Zgloszenie {
 			}
 		}
 		
-		System.out.println("\nKomparator drugi:");
+		System.out.println("\nKomparator LIFO:");
 		for (Zgloszenie z1 : zgloszenia) {
 			for (Zgloszenie z2 : zgloszenia) {
 				System.out.print(z1 + " ");

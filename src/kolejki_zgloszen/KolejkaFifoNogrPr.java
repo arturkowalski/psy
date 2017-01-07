@@ -150,7 +150,7 @@ public final class KolejkaFifoNogrPr implements KolejkaI {
 		return stan;
 	}
 	
-	public void wstaw(Zgloszenie zgloszenie) throws KolejkaPelnaWyj {
+	public void wstaw(Zgloszenie zgloszenie) {
 		if (buforPelny()) {
 			zmienDlugosc(2 * bufor.length);
 		}
